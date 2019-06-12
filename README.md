@@ -21,7 +21,7 @@ git clone https://github.com/realThinhIT/gotit-catalog-api.git .
 ```
 pip install virtualenv
 cd ~/gotit-catalog-api
-virtualenv venv
+virtualenv venv --python=python2.7
 source ~/gotit-catalog-api/venv/bin/activate
 ```
 
