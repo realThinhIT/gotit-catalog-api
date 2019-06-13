@@ -34,3 +34,11 @@ class BaseModel(db.Model):
 
         db.session.add(self)
         db.session.commit()
+
+    def delete(self):
+        """
+        Remove a record from the database
+        """
+
+        db.session.remove(self)
+        db.session.commit()

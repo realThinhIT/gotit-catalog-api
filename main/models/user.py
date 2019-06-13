@@ -4,7 +4,7 @@ from main import bcrypt
 
 
 class UserModel(BaseModel):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     username = Column(String(30), unique=True, nullable=False)
     email = Column(String(255), unique=True, nullable=False)
