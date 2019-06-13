@@ -1,7 +1,7 @@
 
 import datetime
 from sqlalchemy import Column, Integer, DateTime
-from main import db
+from main.database import db
 
 
 class BaseModel(db.Model):
@@ -32,5 +32,5 @@ class BaseModel(db.Model):
         Commit changes of the current object to the database
         """
 
-        db.db_session.add(self)
-        db.db_session.commit()
+        db.session.add(self)
+        db.session.commit()

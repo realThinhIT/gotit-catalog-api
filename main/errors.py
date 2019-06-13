@@ -17,7 +17,7 @@ class Error(Exception):
 
     status_code = 500
 
-    def __init__(self, errors):
+    def __init__(self, errors={}):
         super(Error)
         self.errors = errors or {}
 
@@ -27,18 +27,13 @@ class Error(Exception):
         return resp
 
 
-class ErrorSchema(Schema):
-    error_code = fields.Int()
-    message = fields.String()
-    errors = fields.Raw()
-
-
 class StatusCode(object):
     BAD_REQUEST = 400
     UNAUTHORIZED = 401
     FORBIDDEN = 403
     NOT_FOUND = 404
     METHOD_NOT_ALLOWED = 405
+    INTERNAL_SERVER_ERROR = 500
 
 
 class ErrorCode(object):
@@ -48,6 +43,13 @@ class ErrorCode(object):
     DOES_NOT_EXIST = 40003
     UNAUTHORIZED = 40100
     NOT_FOUND = 40400
+    INTERNAL_SERVER_ERROR = 50000
+
+
+class InternalServerError(Error):
+    status_code = StatusCode.INTERNAL_SERVER_ERROR
+    error_code = ErrorCode.INTERNAL_SERVER_ERROR
+    message = 'There was a problem processing your request.'
 
 
 class NotFoundError(Error):
@@ -62,13 +64,13 @@ class BadRequestError(Error):
     message = 'Bad request, please try again.'
 
 
-class ValidationError(Error):
+class InputValidationError(Error):
     status_code = StatusCode.BAD_REQUEST
     error_code = ErrorCode.VALIDATION_ERROR
     message = 'Some inputs are invalid, please correct and try again.'
 
 
-class AlreadyExistError(Error):
+class DuplicatedResourceError(Error):
     status_code = StatusCode.BAD_REQUEST
     error_code = ErrorCode.ALREADY_EXISTS
     message = 'The resource you trying to modify already exists.'

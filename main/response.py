@@ -1,29 +1,24 @@
 from flask import make_response, json
 
 
-class SuccessResponse(object):
+class ExceptionResponse(object):
     @staticmethod
-    def output_json(data, code=200, message='Action performed successfully', additional_data=None, headers=None):
+    def output_json(exception=None):
         """
         To manipulate structure of response payload.
 
-        :param data:
-        :param code:
-        :param message:
-        :param additional_data:
-        :param headers:
+        :param exception: Exception instance for errors
         :return: flask.Response instance
         """
-        if code in [200, 201]:
-            prepared_data = {
-                'success': 1,
-                'message': message,
-                'data': data,
-                'additional_data': additional_data
-            }
-        else:
-            prepared_data = data
 
-        resp = make_response(json.dumps(prepared_data), code)
-        resp.headers.extend(headers or {})
+        prepared_data = {
+            'error_code': exception.error_code,
+            'message': exception.message,
+            'errors': exception.errors,
+        }
+
+        resp = make_response(json.dumps(prepared_data), exception.status_code)
+        resp.headers.extend({
+            'Content-Type': 'application/json'
+        })
         return resp
