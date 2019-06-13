@@ -33,6 +33,6 @@ def identity_handler(payload):
 
 
 def init_jwt(app):
-    JWT(app=app,
-        authentication_handler=authenticate_handler,
-        identity_handler=identity_handler)
+    return JWT(app=app,
+               authentication_handler=authenticate_handler,
+               identity_handler=identity_handler)
