@@ -25,7 +25,7 @@ class BaseModel(db.Model):
         :return: Cls instance if record with the corresponding ID is found, otherwise None
         """
 
-        return cls.query.get(_id).one_or_none()
+        return cls.query.get(_id)
 
     def save(self):
         """

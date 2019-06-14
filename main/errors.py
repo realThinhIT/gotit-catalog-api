@@ -3,7 +3,6 @@ from marshmallow import fields, Schema
 
 
 class ErrorSchema(Schema):
-    status = 0
     error_code = fields.Int()
     message = fields.String()
     errors = fields.Raw()
@@ -41,6 +40,8 @@ class ErrorCode(object):
     VALIDATION_ERROR = 40001
     ALREADY_EXISTS = 40002
     DOES_NOT_EXIST = 40003
+    WRONG_CONTENT_TYPE = 40004
+    INVALID_RESOURCE = 40005
     UNAUTHORIZED = 40100
     NOT_FOUND = 40400
     INTERNAL_SERVER_ERROR = 50000
@@ -58,10 +59,22 @@ class NotFoundError(Error):
     message = 'The resource requested doesn\'t exist.'
 
 
+class InvalidResourceError(Error):
+    status_code = StatusCode.NOT_FOUND
+    error_code = ErrorCode.INVALID_RESOURCE
+    message = 'The resource requested is invalid!'
+
+
 class BadRequestError(Error):
     status_code = StatusCode.BAD_REQUEST
     error_code = ErrorCode.BAD_REQUEST
     message = 'Bad request, please try again.'
+
+
+class WrongContentTypeError(Error):
+    status_code = StatusCode.BAD_REQUEST
+    error_code = ErrorCode.WRONG_CONTENT_TYPE
+    message = 'The payload sent to server is not a valid JSON. Please try again.'
 
 
 class InputValidationError(Error):

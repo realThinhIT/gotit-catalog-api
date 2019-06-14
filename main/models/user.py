@@ -1,5 +1,5 @@
-from main.models.base import BaseModel
 from sqlalchemy import Column, String, or_
+from main.models.base import BaseModel
 from main import bcrypt
 
 
@@ -20,7 +20,7 @@ class UserModel(BaseModel):
     @classmethod
     def find_user_by_username_or_email(cls, username='', email=''):
         """
-        To find user by username and verify its password.
+        Find user by username and verify its password.
 
         :param username: Username of the user
         :param email: Email of the user
@@ -40,7 +40,7 @@ class UserModel(BaseModel):
     @classmethod
     def verify_user_by_username_and_password(cls, username, password):
         """
-        To find user by username and verify its password.
+        Find user by username and verify its password.
 
         :param username: Username of the user
         :param password: Password of the user in plaintext
