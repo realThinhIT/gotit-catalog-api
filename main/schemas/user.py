@@ -1,7 +1,8 @@
 from marshmallow import Schema, fields, validate
+from .base import BaseSchema
 
 
-class UserSchema(Schema):
+class UserSchema(BaseSchema):
     """
     Schema for User objects
     """

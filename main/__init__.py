@@ -26,6 +26,7 @@ def init_db():
 
 
 # Errors handlers
+# TODO: Add more handlers
 @app.errorhandler(errors.Error)
 def handle_error(exception):
     return Response.output_exception_json(exception=exception)

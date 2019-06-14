@@ -11,10 +11,10 @@ class BaseModel(db.Model):
     __abstract__ = True
 
     id = Column(Integer, primary_key=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
-    updated_at = Column(DateTime,
-                        default=datetime.datetime.utcnow,
-                        onupdate=datetime.datetime.utcnow)
+    created = Column(DateTime, default=datetime.datetime.utcnow)
+    updated = Column(DateTime,
+                     default=datetime.datetime.utcnow,
+                     onupdate=datetime.datetime.utcnow)
 
     @classmethod
     def find_by_id(cls, _id):
@@ -26,6 +26,17 @@ class BaseModel(db.Model):
         """
 
         return cls.query.get(_id)
+
+    def update(self, **kwargs):
+        """
+        Update instance with keyword arguments or by unpacking a dict.
+
+        :param kwargs:
+        :return:
+        """
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
     def save(self):
         """

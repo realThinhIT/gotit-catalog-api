@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, or_
 from main.models.base import BaseModel
 from main import bcrypt
+from main.database import db
 
 
 class UserModel(BaseModel):
@@ -10,6 +11,9 @@ class UserModel(BaseModel):
     email = Column(String(255), unique=True, nullable=False)
     name = Column(String(64), nullable=False)
     password = Column(String(64), nullable=False)
+
+    # Define relationships
+    items = db.relationship('ItemModel', back_populates='user', lazy='dynamic')
 
     def __init__(self, username, email, name, password):
         self.username = username

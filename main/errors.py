@@ -42,9 +42,15 @@ class ErrorCode(object):
     DOES_NOT_EXIST = 40003
     WRONG_CONTENT_TYPE = 40004
     INVALID_RESOURCE = 40005
+    INVALID_PAGINATION_FORMAT = 40006
+    PAGE_EXCEEDED_RANGE = 40007                     # If user request a page larger than total pages
     UNAUTHORIZED = 40100
     NOT_FOUND = 40400
     INTERNAL_SERVER_ERROR = 50000
+    FORBIDDEN = 40300
+
+    # CATEGORY
+    CATEGORY_NOT_FOUND = 40401
 
 
 class InternalServerError(Error):
@@ -58,17 +64,34 @@ class NotFoundError(Error):
     error_code = ErrorCode.NOT_FOUND
     message = 'The resource requested doesn\'t exist.'
 
-
-class InvalidResourceError(Error):
+class NotFoundError(Error):
     status_code = StatusCode.NOT_FOUND
-    error_code = ErrorCode.INVALID_RESOURCE
-    message = 'The resource requested is invalid!'
+    error_code = ErrorCode.NOT_FOUND
+    message = 'The resource requested doesn\'t exist.'
+
+
+class CategoryNotFoundError(Error):
+    status_code = StatusCode.NOT_FOUND
+    error_code = ErrorCode.CATEGORY_NOT_FOUND
+    message = 'The category requested doesn\'t exist.'
 
 
 class BadRequestError(Error):
     status_code = StatusCode.BAD_REQUEST
     error_code = ErrorCode.BAD_REQUEST
     message = 'Bad request, please try again.'
+
+
+class InvalidPaginationFormatError(Error):
+    status_code = StatusCode.BAD_REQUEST
+    error_code = ErrorCode.INVALID_PAGINATION_FORMAT
+    message = 'Information provided for pagination is not in a valid format.'
+
+
+class ExceededRangePaginationError(Error):
+    status_code = StatusCode.BAD_REQUEST
+    error_code = ErrorCode.PAGE_EXCEEDED_RANGE
+    message = 'The page you requested exceeds the max range of total pages.'
 
 
 class WrongContentTypeError(Error):
@@ -88,3 +111,8 @@ class DuplicatedResourceError(Error):
     error_code = ErrorCode.ALREADY_EXISTS
     message = 'The resource you trying to modify already exists.'
 
+
+class ForbiddenError(Error):
+    status_code = StatusCode.FORBIDDEN
+    error_code = ErrorCode.FORBIDDEN
+    message = 'You don\'t have the rights to access and modify this resource.'

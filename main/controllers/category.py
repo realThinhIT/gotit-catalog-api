@@ -1,4 +1,3 @@
-from flask import jsonify
 from main import app
 from main.models import CategoryModel
 from main.errors import NotFoundError

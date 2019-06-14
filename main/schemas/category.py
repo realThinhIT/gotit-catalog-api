@@ -1,7 +1,8 @@
 from marshmallow import Schema, fields, validate
+from .base import BaseSchema
 
 
-class CategorySchema(Schema):
+class CategorySchema(BaseSchema):
     """
     Schema for Category objects
     """

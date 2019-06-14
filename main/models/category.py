@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String
 from main.models.base import BaseModel
+from main.database import db
 
 
 class CategoryModel(BaseModel):
@@ -7,6 +8,9 @@ class CategoryModel(BaseModel):
 
     name = Column(String(64), nullable=False, unique=True)
     description = Column(String(255))
+
+    # Define relationships
+    items = db.relationship('ItemModel', back_populates='category', lazy='dynamic')
 
     def __init__(self, name, description):
         self.name = name
@@ -21,3 +25,6 @@ class CategoryModel(BaseModel):
         """
 
         return cls.query.all()
+
+    def find_item_in_category_by_name(self, name):
+        return self.items.filter_by(name=name).one_or_none()

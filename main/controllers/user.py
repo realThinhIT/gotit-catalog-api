@@ -1,6 +1,6 @@
-from flask import jsonify
 from main import app
 from main.request import validate_with_schema
+from main.response import json_response
 from main.schemas.user import UserSchema
 from main.models import UserModel
 from main.errors import DuplicatedResourceError, InternalServerError
@@ -8,6 +8,7 @@ from main.errors import DuplicatedResourceError, InternalServerError
 
 @app.route('/users', methods=['POST'])
 @validate_with_schema(UserSchema())
+@json_response
 def register_user(data):
     """
     Register a new user into the database
@@ -31,6 +32,4 @@ def register_user(data):
     except Exception:
         raise InternalServerError()
 
-    return jsonify(
-        UserSchema().dump(new_user)
-    ), 200
+    return UserSchema().dump(new_user)
