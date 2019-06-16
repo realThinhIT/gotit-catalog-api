@@ -1,25 +1,27 @@
-from flask_jwt import jwt_required, current_identity
+from flask import jsonify
 from main import app
-from main.response import json_response
 from main.request import parse_with_pagination, validate_with_schema
 from main.utils.category_validator import valid_category_required
 from main.utils.pagination import PaginationUtils
 from main.models.item import ItemModel
 from main.schemas.item import ItemSchema, ItemSchemaRequest
 from main.errors import NotFoundError, DuplicatedResourceError, InternalServerError, ForbiddenError
+from main.security import requires_authentication, optional_authentication
 
 
+# TODO: Make a new is_owner field for authenticated users
 @app.route('/categories/<int:category_id>/items', methods=['GET'])
 @parse_with_pagination
+@optional_authentication
 @valid_category_required(is_child=True)
-@json_response
-def get_items_in_category(category, pagination):
+def get_all_items(category, user, pagination):
     """
     Get a list of items belong to a category.
 
-    :param category:
-    :param pagination:
-    :return:
+    :param category: Category from which the item is being retrieved
+    :param user: User instance of the authenticated user
+    :param pagination: Pagination information
+    :return: A list of items with pagination information
     """
 
     # Calculate total items
@@ -30,33 +32,58 @@ def get_items_in_category(category, pagination):
     )
 
     # Retrieve a list of items
-    items = ItemModel.get_all_with_pagination(
+    items = ItemModel.get_with_pagination_by_category_id(
+        category_id=category.id,
         offset=pagination.get('offset'),
         limit=pagination.get('limit')
     )
 
     # Returns a payload with pagination
-    return payload_with_pagination(ItemSchema(many=True).load(items))
+    return jsonify(
+        payload_with_pagination(
+            ItemSchema(many=True).dump(items)
+        )
+    )
 
 
+# TODO: Make a new is_owner field for authenticated users
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['GET'])
+@optional_authentication
 @valid_category_required(is_child=True)
-@json_response
-def get_item_in_category(item_id, category):
+def get_item(item_id, user, category):
+    """
+    Get a specific item from a category given an ID.
+
+    :param item_id: ID of the item
+    :param user: User instance of the authenticated user
+    :param category: Category from which the item is being retrieved
+    :return: Item information
+    """
+
     item = category.items.filter_by(id=item_id).first()
 
     if item:
-        return ItemSchema().dump(item)
+        return jsonify(
+            ItemSchema().dump(item)
+        ), 200
     else:
         raise NotFoundError()
 
 
 @app.route('/categories/<int:category_id>/items', methods=['POST'])
-@jwt_required()
+@requires_authentication
 @valid_category_required(is_child=True)
 @validate_with_schema(ItemSchemaRequest())
-@json_response
-def create_item_in_category(data, category):
+def create_item(data, user, category):
+    """
+    Create a new item in the given category.
+
+    :param data: The data of the item
+    :param user: User instance of the authenticated user
+    :param category: Category from which the item is being created
+    :return: A newly created Item
+    """
+
     # Check if the category already has an item with the same name
     duplicated_item = category.items.filter_by(name=data.get('name')).one_or_none()
 
@@ -76,15 +103,27 @@ def create_item_in_category(data, category):
     except Exception:
         raise InternalServerError()
 
-    return ItemSchema().dump(new_item)
+    return jsonify(
+        ItemSchema().dump(new_item)
+    ), 200
 
 
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['PUT'])
-@jwt_required()
+@requires_authentication
 @valid_category_required(is_child=True)
 @validate_with_schema(ItemSchemaRequest())
-@json_response
-def update_item_in_category(item_id, data, category):
+def update_item(item_id, data, user, category):
+    """
+    Update an existing item with new data.
+    Note that only the one who owns the resource can update it.
+
+    :param item_id: ID of the item
+    :param data: The new data of the item
+    :param user: User instance of the authenticated user
+    :param category: Category from which the item is being retrieved
+    :return:
+    """
+
     # Check if this item exists in the database
     item = category.items.filter_by(id=item_id).one_or_none()
 
@@ -92,7 +131,7 @@ def update_item_in_category(item_id, data, category):
         raise NotFoundError()
 
     # Check if the user has the rights to modify this object
-    if current_identity.id != item.user_id:
+    if user.id != item.user_id:
         raise ForbiddenError()
 
     # Check if the category already has an item with the same name
@@ -111,14 +150,25 @@ def update_item_in_category(item_id, data, category):
     except Exception:
         raise InternalServerError()
 
-    return ItemSchema().dump(item)
+    return jsonify(
+        ItemSchema().dump(item)
+    ), 200
 
 
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['DELETE'])
-@jwt_required()
+@requires_authentication
 @valid_category_required(is_child=True)
-@json_response
-def delete_item_in_category(item_id, category):
+def delete_item(item_id, user, category):
+    """
+    Delete an existing item in the database.
+    Note that only the one who owns the resource can delete it.
+
+    :param item_id: ID of the item
+    :param user: User instance of the authenticated user
+    :param category: Category from which the item is being retrieved
+    :return:
+    """
+
     # Check if this item exists in the database
     item = category.items.filter_by(id=item_id).one_or_none()
 
@@ -126,15 +176,16 @@ def delete_item_in_category(item_id, category):
         raise NotFoundError()
 
     # Check if the user has the rights to modify this object
-    if current_identity.id != item.user_id:
+    if user.id != item.user_id:
         raise ForbiddenError()
 
     # Proceed to update the item
     try:
         item.delete()
-    except Exception:
+    except Exception, e:
+        print(e)
         raise InternalServerError()
 
-    return {
+    return jsonify({
         'message': 'Item deleted successfully.'
-    }, 200
+    }), 200

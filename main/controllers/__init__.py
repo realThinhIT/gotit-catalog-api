@@ -1,1 +1,1 @@
-from . import category, user, item
+from . import category, user, item, authentication

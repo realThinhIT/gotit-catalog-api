@@ -64,6 +64,7 @@ class NotFoundError(Error):
     error_code = ErrorCode.NOT_FOUND
     message = 'The resource requested doesn\'t exist.'
 
+
 class NotFoundError(Error):
     status_code = StatusCode.NOT_FOUND
     error_code = ErrorCode.NOT_FOUND
@@ -116,3 +117,16 @@ class ForbiddenError(Error):
     status_code = StatusCode.FORBIDDEN
     error_code = ErrorCode.FORBIDDEN
     message = 'You don\'t have the rights to access and modify this resource.'
+
+
+class InvalidCredentialsError(Error):
+    status_code = StatusCode.UNAUTHORIZED
+    error_code = ErrorCode.UNAUTHORIZED
+    message = 'Invalid credentials. Username and/ or password is not correct. Please check and try again.'
+
+
+class UnauthorizedError(Error):
+    status_code = StatusCode.UNAUTHORIZED
+    error_code = ErrorCode.UNAUTHORIZED
+    message = 'Invalid credentials. Please provide a valid access token.'
+

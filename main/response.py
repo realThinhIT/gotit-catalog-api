@@ -26,28 +26,3 @@ class Response(object):
         })
 
         return resp
-
-
-def json_response(func):
-    @functools.wraps(func)
-    def decorator(*args, **kwargs):
-        # Try to parse response to JSON
-        func_response = func(*args, **kwargs)
-
-        # Parse data
-        is_res = isinstance(func_response, tuple) or isinstance(func_response, Response)
-        data = func_response[0] if is_res else func_response
-        status_code = func_response[1] if is_res else 200
-
-        # Make response
-        try:
-            return (
-                jsonify(data),
-                status_code
-            )
-
-        # In case the request was jsonify-ed
-        except TypeError:
-            return data, status_code
-
-    return decorator

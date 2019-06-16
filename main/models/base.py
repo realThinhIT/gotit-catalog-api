@@ -51,5 +51,5 @@ class BaseModel(db.Model):
         Remove a record from the database
         """
 
-        db.session.remove(self)
+        db.session.delete(self)
         db.session.commit()

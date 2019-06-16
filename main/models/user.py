@@ -1,6 +1,5 @@
 from sqlalchemy import Column, String, or_
 from main.models.base import BaseModel
-from main import bcrypt
 from main.database import db
 
 
@@ -10,16 +9,19 @@ class UserModel(BaseModel):
     username = Column(String(30), unique=True, nullable=False)
     email = Column(String(255), unique=True, nullable=False)
     name = Column(String(64), nullable=False)
-    password = Column(String(64), nullable=False)
+    password_hash = Column(String(64), nullable=False)
 
     # Define relationships
     items = db.relationship('ItemModel', back_populates='user', lazy='dynamic')
 
-    def __init__(self, username, email, name, password):
+    # None-sql fields
+    password = None
+
+    def __init__(self, username, email, name, password_hash):
         self.username = username
         self.email = email
         self.name = name
-        self.password = bcrypt.generate_password_hash(password)
+        self.password_hash = password_hash
 
     @classmethod
     def find_user_by_username_or_email(cls, username='', email=''):
@@ -37,23 +39,6 @@ class UserModel(BaseModel):
         )).first()
 
         if user:
-            return user
-        else:
-            return None
-
-    @classmethod
-    def verify_user_by_username_and_password(cls, username, password):
-        """
-        Find user by username and verify its password.
-
-        :param username: Username of the user
-        :param password: Password of the user in plaintext
-        :return: User instance corresponds to the user, or None
-        """
-
-        user = cls.query.filter_by(username=username).first()
-
-        if user and user.password and bcrypt.check_password_hash(user.password, password):
             return user
         else:
             return None

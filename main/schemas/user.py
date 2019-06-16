@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import fields, validate
 from .base import BaseSchema
 
 
@@ -30,16 +30,7 @@ class UserSchema(BaseSchema):
         ],
         load_only=True
     )
-
-
-class UserAuthenticationSchema(Schema):
-    """
-    Schema for User while performing authentication
-    """
-
-    username = fields.String(
-        required=True
+    password_hash = fields.String(
+        load_only=True
     )
-    password = fields.String(
-        required=True
-    )
+
