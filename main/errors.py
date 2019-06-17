@@ -20,11 +20,6 @@ class Error(Exception):
         super(Error)
         self.errors = errors or {}
 
-    def to_response(self):
-        resp = jsonify(ErrorSchema().dump(self).data)
-        resp.status_code = self.status_code
-        return resp
-
 
 class StatusCode(object):
     BAD_REQUEST = 400

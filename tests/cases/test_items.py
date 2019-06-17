@@ -31,6 +31,36 @@ def test_get_all_valid_items_without_authentication(client):
             assert 'is_owner' not in res
 
 
+def test_get_all_valid_items_with_invalid_authentication_type(client):
+    for category_id in range(1, 4):
+        response = client.get(
+            '/categories/{}/items'.format(category_id),
+            headers={
+                'Authorization': 'JWT x'
+            }
+        )
+
+        resp = json_response(response)
+
+        # Check if server returns 200
+        assert response.status_code == 200
+
+
+def test_get_all_valid_items_with_invalid_jwt_authentication(client):
+    for category_id in range(1, 4):
+        response = client.get(
+            '/categories/{}/items'.format(category_id),
+            headers={
+                'Authorization': 'Bearer XXXXX'
+            }
+        )
+
+        resp = json_response(response)
+
+        # Check if server returns 200
+        assert response.status_code == 200
+
+
 def test_get_all_valid_items_with_authentication(client):
     for category_id in range(1, 4):
         response = client.get(

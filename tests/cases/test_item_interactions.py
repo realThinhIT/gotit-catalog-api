@@ -35,6 +35,43 @@ def test_create_new_item_with_auth(client):
     ) is True
 
 
+def test_create_new_item_with_duplicated_content(client):
+    # Init data
+    user = _create_user(client)
+    headers = create_headers(
+        access_token=generate_access_token(user['id'])
+    )
+
+    category_id = 1
+    data = {
+        'name': 'My Item {}'.format(random_string(10))
+    }
+
+    # Create item
+    response = client.post(
+        '/categories/{}/items'.format(category_id),
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    response2 = client.post(
+        '/categories/{}/items'.format(category_id),
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    resp = json_response(response2)
+
+    # Check if server returns 400
+    assert response2.status_code == 400
+
+    # Check if each dict contains these keys
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
+
+
 def test_create_new_item_with_invalid_input_with_auth(client):
     # Init data
     user = _create_user(client)
@@ -131,6 +168,42 @@ def test_update_item_with_valid_data_with_auth(client):
 
     # Check if new name matches
     assert resp['name'] == data['name']
+
+
+def test_update_item_with_duplicated_data_with_auth(client):
+    # Init data
+    category_id = 1
+
+    user = _create_user(client)
+    headers = create_headers(
+        access_token=generate_access_token(user['id'])
+    )
+    item = _create_item_in_category(client, headers, category_id)
+    item2 = _create_item_in_category(client, headers, category_id)
+
+    item_id = item['id']
+
+    data = {
+        'name': item2['name']
+    }
+
+    # Create item
+    response = client.put(
+        '/categories/{}/items/{}'.format(category_id, item_id),
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if each dict contains these keys
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
 
 
 def test_update_item_with_invalid_data_with_auth(client):

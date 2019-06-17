@@ -7,6 +7,7 @@ from main.models.item import ItemModel
 from main.schemas.item import ItemSchema, ItemSchemaRequest
 from main.errors import NotFoundError, DuplicatedResourceError, InternalServerError, ForbiddenError
 from main.security import requires_authentication, optional_authentication
+from main.utils.item_validator import category_item_required
 
 
 # TODO: Make a new is_owner field for authenticated users
@@ -122,28 +123,19 @@ def create_item(data, user, category):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['PUT'])
 @requires_authentication
 @valid_category_required(is_child=True)
+@category_item_required(updating=True)
 @validate_with_schema(ItemSchemaRequest())
-def update_item(item_id, data, user, category):
+def update_item(item, data, user, category):
     """
     Update an existing item with new data.
     Note that only the one who owns the resource can update it.
 
-    :param item_id: ID of the item
+    :param item: Item instance
     :param data: The new data of the item
     :param user: User instance of the authenticated user
     :param category: Category from which the item is being retrieved
     :return:
     """
-
-    # Check if this item exists in the database
-    item = category.items.filter_by(id=item_id).one_or_none()
-
-    if item is None:
-        raise NotFoundError()
-
-    # Check if the user has the rights to modify this object
-    if user.id != item.user_id:
-        raise ForbiddenError()
 
     # Check if the category already has an item with the same name
     duplicated_item = category.items.filter_by(name=data.get('name')).one_or_none()
@@ -169,32 +161,22 @@ def update_item(item_id, data, user, category):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['DELETE'])
 @requires_authentication
 @valid_category_required(is_child=True)
-def delete_item(item_id, user, category):
+@category_item_required(updating=True)
+def delete_item(item, user, category):
     """
     Delete an existing item in the database.
     Note that only the one who owns the resource can delete it.
 
-    :param item_id: ID of the item
+    :param item: Item instance
     :param user: User instance of the authenticated user
     :param category: Category from which the item is being retrieved
     :return:
     """
 
-    # Check if this item exists in the database
-    item = category.items.filter_by(id=item_id).one_or_none()
-
-    if item is None:
-        raise NotFoundError()
-
-    # Check if the user has the rights to modify this object
-    if user.id != item.user_id:
-        raise ForbiddenError()
-
     # Proceed to update the item
     try:
         item.delete()
     except Exception, e:
-        print(e)
         raise InternalServerError()
 
     return jsonify({

@@ -6,7 +6,7 @@ from .base import BaseSchema
 def _validate_username(string):
     regex = re.compile('^[A-Za-z0-9]+$')
     if not regex.match(string):
-        raise ValidationError('Username must contain only lowercase letters, numbers.')
+        raise ValidationError('Username must contain only lowercase letters and numbers.')
 
 
 class UserSchema(BaseSchema):

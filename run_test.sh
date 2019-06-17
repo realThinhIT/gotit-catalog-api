@@ -12,4 +12,4 @@ omit =
     tests/*
 " > ./.coveragerc
 
-py.test tests --cov=main
+py.test tests --cov=main --cov-report term-missing

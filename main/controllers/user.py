@@ -22,15 +22,20 @@ def register_user(data):
         data.get('email')
     )
 
+    # Tell user which field is duplicated
     if duplicated_user:
-        raise DuplicatedResourceError({
-            'username': [
-                'Username or email is duplicated.'
-            ],
-            'email': [
-                'Username or email is duplicated.'
-            ]
-        })
+        if duplicated_user.email == data.get('email'):
+            raise DuplicatedResourceError({
+                'email': [
+                    'Email is registered.'
+                ]
+            })
+        else:
+            raise DuplicatedResourceError({
+                'username': [
+                    'Username is registered.'
+                ],
+            })
 
     # Proceed to create new user
     try:

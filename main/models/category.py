@@ -25,6 +25,3 @@ class CategoryModel(BaseModel):
         """
 
         return cls.query.all()
-
-    def find_item_in_category_by_name(self, name):
-        return self.items.filter_by(name=name).one_or_none()

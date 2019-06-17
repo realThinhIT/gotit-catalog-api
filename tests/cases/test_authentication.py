@@ -44,9 +44,47 @@ def test_post_login_invalid_credentials(client):
     ) is True
 
 
+def test_post_login_invalid_headers_no_token(client):
+    response = client.post(
+        '/authentication',
+        headers={
+            'Authorization': 'Bearer'
+        },
+        data=json.dumps({})
+    )
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if these keys exists in response
+    assert all(
+        key in json_response(response).keys()
+        for key in ['message', 'error_code']
+    ) is True
+
+
+def test_post_login_invalid_headers_wrong_type(client):
+    response = client.post(
+        '/authentication',
+        headers={
+            'Authorization': 'JWT abc'
+        },
+        data=json.dumps({})
+    )
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if these keys exists in response
+    assert all(
+        key in json_response(response).keys()
+        for key in ['message', 'error_code']
+    ) is True
+
+
 def test_post_login_invalid_input(client):
     combine_data = {
-        'username': [None, '', 1234, 'thinh nguyen', 'with/specialchars'],
+        'username': [None, '', 1234, 'thinh nguyen', 'with/specialchars', 'ThinhNguyen'],
         'password': [None, '', '123456']
     }
 
@@ -96,9 +134,35 @@ def test_post_register_correct_input(client):
     assert 'password' not in resp.keys()
 
 
-def test_post_register_duplicated_user(client):
+def test_post_register_duplicated_username(client):
     credential = {
         'username': 'thinhnd',
+        'password': '1234567',
+        'name': 'Thinh Nguyen',
+        'email': 'thinhnd.ict2222@gmail.com'
+    }
+
+    response = client.post(
+        '/users',
+        headers=create_headers(),
+        data=json.dumps(credential)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if these keys exists in response
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
+
+
+def test_post_register_duplicated_email(client):
+    credential = {
+        'username': 'thinhnd222',
         'password': '1234567',
         'name': 'Thinh Nguyen',
         'email': 'thinhnd.ict@gmail.com'
@@ -124,15 +188,18 @@ def test_post_register_duplicated_user(client):
 
 def test_post_register_invalid_input(client):
     combine_data = {
-        'username': [None, '', 1234, 'thinh nguyen', 'with/specialchars'],
+        'username': [None, '', 1234, 'thinh nguyen', 'with/specialchars', 'thinhndvalidate'],
         'email': [None, '', 'not an email', 'test@gmail.com'],
-        'password': [None, '', '12345']
+        'password': [None, '', '12345', '123456'],
+        'name': [None, '1234', '']
     }
 
+    # To create combinations of 4
     combinations = itertools.product(*combine_data.values())
 
     num_valid_combine = 0
     for combination in combinations:
+        # Map key -> value of tuples
         data = dict((k, v) for k, v in zip(combine_data.keys(), combination))
         response = client.post(
             '/users',
