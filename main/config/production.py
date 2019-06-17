@@ -8,5 +8,8 @@ class _ProductionConfig(_Config):
     # Flask
     DEBUG = False
 
+    # PyTest
+    TESTING = False
+
 
 config = _ProductionConfig
