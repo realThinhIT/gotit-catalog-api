@@ -2,6 +2,8 @@ import functools
 from main.errors import NotFoundError, ForbiddenError, DuplicatedResourceError
 
 
+# A decorator that checks for valid item from item_id_key, and pass it to route handler
+# for future processing.
 def category_item_required(needs_ownership=False, item_id_key='item_id'):
     def item_required_wrapper(func):
         @functools.wraps(func)
@@ -30,6 +32,8 @@ def category_item_required(needs_ownership=False, item_id_key='item_id'):
     return item_required_wrapper
 
 
+# A decorator that checks for duplicated name in the same category
+# while updating, or creating new item.
 def category_item_unique_name_required(func):
     @functools.wraps(func)
     def decorator(*args, **kwargs):

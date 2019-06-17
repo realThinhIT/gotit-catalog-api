@@ -3,6 +3,8 @@ from main.models import CategoryModel
 from main.errors import CategoryNotFoundError, NotFoundError
 
 
+# A decorator that checks if the requested category id does exist, and
+# pass an Category instance into route handler.
 def valid_category_required(is_child=False, category_id_key='category_id'):
     def decorator_wrapper(func):
         @functools.wraps(func)
