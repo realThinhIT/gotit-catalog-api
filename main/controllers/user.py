@@ -3,7 +3,7 @@ from main import app
 from main.request import validate_with_schema
 from main.schemas.user import UserSchema
 from main.models import UserModel
-from main.errors import DuplicatedResourceError, InternalServerError
+from main.errors import DuplicatedResourceError
 from main.utils.password import update_password_hash_in_dict
 
 
@@ -38,13 +38,10 @@ def register_user(data):
             })
 
     # Proceed to create new user
-    try:
-        data = update_password_hash_in_dict(data)
+    data = update_password_hash_in_dict(data)
 
-        new_user = UserModel(**data)
-        new_user.save()
-    except Exception:
-        raise InternalServerError()
+    new_user = UserModel(**data)
+    new_user.save()
 
     return jsonify(
         UserSchema().dump(new_user)

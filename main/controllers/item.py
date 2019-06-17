@@ -5,7 +5,6 @@ from main.utils.category_validator import valid_category_required
 from main.utils.pagination import PaginationUtils
 from main.models.item import ItemModel
 from main.schemas.item import ItemSchema, ItemSchemaRequest
-from main.errors import NotFoundError, DuplicatedResourceError, InternalServerError
 from main.security import requires_authentication, optional_authentication
 from main.utils.item_validator import category_item_required, category_item_unique_name_required
 
@@ -65,17 +64,14 @@ def get_item(item, user, **kwargs):
     :return: Item information
     """
 
-    if item:
-        # If authentication is provided,
-        # update is_owner
-        if user:
-            item.is_owner = item.user_id == user.id
+    # If authentication is provided,
+    # update is_owner
+    if user:
+        item.is_owner = item.user_id == user.id
 
-        return jsonify(
-            ItemSchema().dump(item)
-        ), 200
-    else:
-        raise NotFoundError()
+    return jsonify(
+        ItemSchema().dump(item)
+    ), 200
 
 
 @app.route('/categories/<int:category_id>/items', methods=['POST'])
@@ -94,14 +90,11 @@ def create_item(data, user, category):
     """
 
     # Proceed to create new item in category
-    try:
-        new_item = ItemModel(**data)
-        new_item.user_id = user.id
-        new_item.category_id = category.id
+    new_item = ItemModel(**data)
+    new_item.user_id = user.id
+    new_item.category_id = category.id
 
-        new_item.save()
-    except Exception:
-        raise InternalServerError()
+    new_item.save()
 
     return jsonify(
         ItemSchema().dump(new_item)
@@ -125,11 +118,8 @@ def update_item(item, data, **kwargs):
     """
 
     # Proceed to update the item
-    try:
-        item.update(**data)
-        item.save()
-    except Exception:
-        raise InternalServerError()
+    item.update(**data)
+    item.save()
 
     return jsonify(
         ItemSchema().dump(item)
@@ -150,10 +140,7 @@ def delete_item(item, **kwargs):
     """
 
     # Proceed to update the item
-    try:
-        item.delete()
-    except Exception:
-        raise InternalServerError()
+    item.delete()
 
     return jsonify({
         'message': 'Item deleted successfully.'

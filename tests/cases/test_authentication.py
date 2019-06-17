@@ -199,7 +199,7 @@ def test_post_register_duplicated_email(client):
 
 def test_post_register_invalid_input(client):
     combine_data = {
-        'username': [None, '', 1234, 'thinh nguyen', 'with/specialchars', 'thinhndvalidate'],
+        'username': [None, '', 1234, 'thinh nguyen', 'with/specialchars', 'thinhndvalidate', 'invalid_input*'],
         'email': [None, '', 'not an email', 'test@gmail.com'],
         'password': [None, '', '12345', '123456'],
         'name': [None, '1234', '']
@@ -221,3 +221,29 @@ def test_post_register_invalid_input(client):
 
         # Check if valid combination counter always equals to 0 (all cases are invalid)
         assert num_valid_combine <= 1
+
+
+def test_post_register_invalid_username(client):
+    credential = {
+        'username': 'thinhnd222*',
+        'password': '1234567',
+        'name': 'Thinh Nguyen',
+        'email': 'thinhnd.ict11111@gmail.com'
+    }
+
+    response = client.post(
+        '/users',
+        headers=create_headers(),
+        data=json.dumps(credential)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if these keys exists in response
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
