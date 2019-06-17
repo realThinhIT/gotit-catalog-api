@@ -59,7 +59,7 @@ SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://{username}:{password}@127.0.0.
 5. If you want some mockup data for staging, import mockup data using this command **after running the server for the first time.**
 
 ```
-mysql -u {username} -p {database_name} < ./main/sql/test.sql
+mysql -u {username} -p {database_name} < ./sql/test.sql
 ```
 
 ## Start Server
@@ -100,4 +100,4 @@ After running this command, you'll get tests results (passed, failed, warning) a
 
 ### Test Data
 
-Test data is located at `main/sql/test.sql`.
+Test data is located at `./sql/test.sql`.
