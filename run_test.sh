@@ -6,6 +6,7 @@ export FLASK_ENV=test
 echo "
 [run]
 omit =
+    */base.py
     main/__init__.py
     main/config/*
     tests/*

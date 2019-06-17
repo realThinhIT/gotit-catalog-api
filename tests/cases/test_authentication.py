@@ -96,6 +96,32 @@ def test_post_register_correct_input(client):
     assert 'password' not in resp.keys()
 
 
+def test_post_register_duplicated_user(client):
+    credential = {
+        'username': 'thinhnd',
+        'password': '1234567',
+        'name': 'Thinh Nguyen',
+        'email': 'thinhnd.ict@gmail.com'
+    }
+
+    response = client.post(
+        '/users',
+        headers=create_headers(),
+        data=json.dumps(credential)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if these keys exists in response
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
+
+
 def test_post_register_invalid_input(client):
     combine_data = {
         'username': [None, '', 1234, 'thinh nguyen', 'with/specialchars'],

@@ -1,9 +1,10 @@
 from flask import Flask
+import logging
 from main.config import config
 from main.response import Response
 from main.database import db
 from main.models import *
-from main.errors import NotFoundError, InternalServerError
+from main.errors import NotFoundError, InternalServerError, MethodNotAllowed
 
 # Create app instance associated with the module that runs it
 app = Flask(__name__)
@@ -29,9 +30,14 @@ def handle_error(exception):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return Response.output_exception_json(exception=NotFoundError(error.message))
+    return Response.output_exception_json(exception=NotFoundError())
+
+
+@app.errorhandler(405)
+def method_not_allowed(error):
+    return Response.output_exception_json(exception=MethodNotAllowed())
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    return Response.output_exception_json(exception=InternalServerError(error.message))
+    return Response.output_exception_json(exception=InternalServerError())

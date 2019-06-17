@@ -61,6 +61,36 @@ def test_get_all_valid_items_with_authentication(client):
             ) is True
 
 
+def test_get_all_valid_items_with_invalid_pagination_with_authentication(client):
+    for category_id in range(1, 4):
+        response = client.get(
+            '/categories/{}/items?page=abc'.format(category_id),
+            headers=create_headers(
+                access_token=generate_access_token(1)
+            )
+        )
+
+        resp = json_response(response)
+
+        # Check if server returns 400
+        assert response.status_code == 400
+
+
+def test_get_all_valid_items_with_exceeded_pagination_with_authentication(client):
+    for category_id in range(1, 4):
+        response = client.get(
+            '/categories/{}/items?page=10'.format(category_id),
+            headers=create_headers(
+                access_token=generate_access_token(1)
+            )
+        )
+
+        resp = json_response(response)
+
+        # Check if server returns 400
+        assert response.status_code == 400
+
+
 def test_get_all_items_by_invalid_category_id(client):
     for category_id in range(5, 7):
         response = client.get(

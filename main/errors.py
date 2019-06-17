@@ -48,6 +48,7 @@ class ErrorCode(object):
     NOT_FOUND = 40400
     INTERNAL_SERVER_ERROR = 50000
     FORBIDDEN = 40300
+    METHOD_NOT_ALLOWED = 40500
 
     # CATEGORY
     CATEGORY_NOT_FOUND = 40401
@@ -124,3 +125,8 @@ class UnauthorizedError(Error):
     error_code = ErrorCode.UNAUTHORIZED
     message = 'Invalid credentials. Please provide a valid access token.'
 
+
+class MethodNotAllowed(Error):
+    status_code = StatusCode.METHOD_NOT_ALLOWED
+    error_code = ErrorCode.METHOD_NOT_ALLOWED
+    message = 'This method is not allowed for this resource. Please try again.'

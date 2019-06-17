@@ -12,3 +12,4 @@ class _Config(object):
 
     # Flask-Bcrypt
     BCRYPT_LOG_ROUNDS = 10                          # Hashing rounds for passwords
+
