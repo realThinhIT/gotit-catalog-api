@@ -54,7 +54,7 @@ def get_all_items(category, user, pagination):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['GET'])
 @optional_authentication
 @valid_category_required(is_child=True)
-@category_item_required(needs_ownership=False)
+@category_item_required(requires_ownership=False)
 def get_item(item, user, **kwargs):
     """
     Get a specific item from a category given an ID.
@@ -104,7 +104,7 @@ def create_item(data, user, category):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['PUT'])
 @requires_authentication
 @valid_category_required(is_child=True)
-@category_item_required(needs_ownership=True)
+@category_item_required(requires_ownership=True)
 @validate_with_schema(ItemSchemaRequest())
 @category_item_unique_name_required
 def update_item(item, data, **kwargs):
@@ -129,7 +129,7 @@ def update_item(item, data, **kwargs):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['DELETE'])
 @requires_authentication
 @valid_category_required(is_child=True)
-@category_item_required(needs_ownership=True)
+@category_item_required(requires_ownership=True)
 def delete_item(item, **kwargs):
     """
     Delete an existing item in the database.

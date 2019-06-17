@@ -4,7 +4,7 @@ from main.errors import NotFoundError, ForbiddenError, DuplicatedResourceError
 
 # A decorator that checks for valid item from item_id_key, and pass it to route handler
 # for future processing.
-def category_item_required(needs_ownership=False, item_id_key='item_id'):
+def category_item_required(requires_ownership=False, item_id_key='item_id'):
     def item_required_wrapper(func):
         @functools.wraps(func)
         def decorator(*args, **kwargs):
@@ -19,7 +19,7 @@ def category_item_required(needs_ownership=False, item_id_key='item_id'):
                 raise NotFoundError()
 
             # Check if the user has the rights to modify this object
-            if needs_ownership:
+            if requires_ownership:
                 if user.id != item.user_id:
                     raise ForbiddenError()
 
