@@ -8,5 +8,8 @@ class _TestConfig(_Config):
     # Flask
     DEBUG = False
 
+    # PyTest
+    TESTING = True
+
 
 config = _TestConfig

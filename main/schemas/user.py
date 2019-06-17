@@ -1,5 +1,12 @@
-from marshmallow import fields, validate
+import re
+from marshmallow import fields, validate, ValidationError
 from .base import BaseSchema
+
+
+def _validate_username(string):
+    regex = re.compile('^[A-Za-z0-9]+$')
+    if not regex.match(string):
+        raise ValidationError('Username must contain only lowercase letters, numbers.')
 
 
 class UserSchema(BaseSchema):
@@ -11,7 +18,8 @@ class UserSchema(BaseSchema):
     username = fields.String(
         required=True,
         validate=[
-            validate.Length(5, 30, 'Username must be between 5 - 30 characters.')
+            validate.Length(5, 30, 'Username must be between 5 - 30 characters.'),
+            _validate_username
         ]
     )
     email = fields.Email(
@@ -33,4 +41,5 @@ class UserSchema(BaseSchema):
     password_hash = fields.String(
         load_only=True
     )
+
 

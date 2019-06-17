@@ -17,6 +17,6 @@ def execute_sql_from_file(filename):
         # For example, if the tables do not yet exist, this will skip over
         # the DROP TABLE commands
         try:
-            db.db_session.execute(command)
+            db.session.execute(command.decode('utf-8'))
         except Exception, e:
             logging.exception(e)

@@ -2,7 +2,8 @@ from flask import Flask
 from main.config import config
 from main.response import Response
 from main.database import db
-import main.errors
+from main.models import *
+from main.errors import NotFoundError, InternalServerError
 
 # Create app instance associated with the module that runs it
 app = Flask(__name__)
@@ -10,12 +11,14 @@ app = Flask(__name__)
 # Load configurations corresponding to environment
 app.config.from_object(config)
 
+# Init DB
+db.init_app(app)
+
 # To initialize database using Flask-SQLAlchemy
 @app.before_first_request
 def init_db():
     import main.models
     db.create_all()
-
 
 # Errors handlers
 # TODO: Add more handlers
@@ -26,9 +29,9 @@ def handle_error(exception):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return Response.output_exception_json(exception=errors.InvalidResourceError(error.message))
+    return Response.output_exception_json(exception=NotFoundError(error.message))
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    return Response.output_exception_json(exception=errors.InternalServerError(error.message))
+    return Response.output_exception_json(exception=InternalServerError(error.message))

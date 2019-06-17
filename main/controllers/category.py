@@ -3,6 +3,7 @@ from main import app
 from main.models import CategoryModel
 from main.errors import NotFoundError
 from main.schemas.category import CategorySchema
+from main.utils.category_validator import valid_category_required
 
 
 @app.route('/categories', methods=['GET'])
@@ -19,19 +20,15 @@ def get_all_categories():
 
 
 @app.route('/categories/<int:category_id>', methods=['GET'])
-def get_category_info(category_id):
+@valid_category_required(is_child=False)
+def get_category_info(category):
     """
     Get category information from the database using the given Category ID.
 
-    :param category_id: ID of the category
+    :param category: The Category instance
     :return: Category object, otherwise
     """
 
-    category = CategoryModel.find_by_id(category_id)
-
-    if category is not None:
-        return jsonify(
-            CategorySchema().dump(category)
-        ), 200
-    else:
-        raise NotFoundError()
+    return jsonify(
+        CategorySchema().dump(category)
+    ), 200

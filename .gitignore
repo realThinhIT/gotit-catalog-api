@@ -2,3 +2,8 @@ venv
 venv/**
 .idea
 .idea/**
+.pytest_cache
+.pytest_cache/**
+*.pyc
+**/*.pyc
+**/**/*.pyc

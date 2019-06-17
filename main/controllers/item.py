@@ -38,6 +38,12 @@ def get_all_items(category, user, pagination):
         limit=pagination.get('limit')
     )
 
+    # If authentication is provided,
+    # update is_owner
+    if user:
+        for item in items:
+            item.is_owner = item.user_id == user.id
+
     # Returns a payload with pagination
     return jsonify(
         payload_with_pagination(
@@ -63,6 +69,11 @@ def get_item(item_id, user, category):
     item = category.items.filter_by(id=item_id).first()
 
     if item:
+        # If authentication is provided,
+        # update is_owner
+        if user:
+            item.is_owner = item.user_id == user.id
+
         return jsonify(
             ItemSchema().dump(item)
         ), 200
@@ -96,7 +107,7 @@ def create_item(data, user, category):
     # Proceed to create new item in category
     try:
         new_item = ItemModel(**data)
-        new_item.user_id = 1
+        new_item.user_id = user.id
         new_item.category_id = category.id
 
         new_item.save()

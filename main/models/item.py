@@ -17,6 +17,9 @@ class ItemModel(BaseModel):
     category = db.relationship('CategoryModel', back_populates='items', lazy=True)
     user = db.relationship('UserModel', back_populates='items', lazy=True)
 
+    # Additional fields
+    is_owner = None
+
     @classmethod
     def get_with_pagination_by_category_id(cls, category_id, offset, limit):
         """

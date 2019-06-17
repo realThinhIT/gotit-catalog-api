@@ -1,5 +1,4 @@
 from main import app
-from main.database import db
 import os
 
 # Retrieve environment configurations
@@ -10,7 +9,6 @@ _port = int(os.getenv('PORT', 5000))
 if __name__ == '__main__':
     from main.controllers import *
 
-    db.init_app(app)
     app.run(
         host='0.0.0.0',
         port=_port

@@ -65,12 +65,6 @@ class NotFoundError(Error):
     message = 'The resource requested doesn\'t exist.'
 
 
-class NotFoundError(Error):
-    status_code = StatusCode.NOT_FOUND
-    error_code = ErrorCode.NOT_FOUND
-    message = 'The resource requested doesn\'t exist.'
-
-
 class CategoryNotFoundError(Error):
     status_code = StatusCode.NOT_FOUND
     error_code = ErrorCode.CATEGORY_NOT_FOUND

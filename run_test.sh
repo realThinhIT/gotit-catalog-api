@@ -3,4 +3,4 @@
 export ENVIRONMENT=test
 export FLASK_ENV=test
 
-pytest app.py
+py.test tests --cov=main

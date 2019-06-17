@@ -12,6 +12,10 @@ class ItemSchema(BaseSchema):
     )
     description = fields.String()
 
+    is_owner = fields.Boolean(
+        dump_only=True
+    )
+
 
 class ItemSchemaRequest(Schema):
     name = fields.String(
