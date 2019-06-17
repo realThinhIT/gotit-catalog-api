@@ -1,5 +1,4 @@
 from flask import Flask
-import logging
 from main.config import config
 from main.response import Response
 from main.database import db
@@ -22,7 +21,6 @@ def init_db():
     db.create_all()
 
 # Errors handlers
-# TODO: Add more handlers
 @app.errorhandler(errors.Error)
 def handle_error(exception):
     return Response.output_exception_json(exception=exception)

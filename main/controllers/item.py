@@ -10,7 +10,6 @@ from main.security import requires_authentication, optional_authentication
 from main.utils.item_validator import category_item_required, category_item_unique_name_required
 
 
-# TODO: Make a new is_owner field for authenticated users
 @app.route('/categories/<int:category_id>/items', methods=['GET'])
 @parse_with_pagination
 @optional_authentication
@@ -53,7 +52,6 @@ def get_all_items(category, user, pagination):
     )
 
 
-# TODO: Make a new is_owner field for authenticated users
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['GET'])
 @optional_authentication
 @valid_category_required(is_child=True)
