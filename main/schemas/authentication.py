@@ -7,10 +7,16 @@ class RequestUserAuthenticationSchema(Schema):
     """
 
     username = fields.String(
-        required=True
+        required=True,
+        error_messages={
+            'required': 'Username is required.'
+        }
     )
     password = fields.String(
-        required=True
+        required=True,
+        error_messages={
+            'required': 'Password is required.'
+        }
     )
 
 

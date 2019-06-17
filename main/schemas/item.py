@@ -8,7 +8,10 @@ class ItemSchema(BaseSchema):
         required=True,
         validate=[
             validate.Length(1, 64, 'Name is required and must be between 1 - 64 characters.')
-        ]
+        ],
+        error_messages={
+            'required': 'Item name is required.'
+        }
     )
     description = fields.String()
 
@@ -22,6 +25,9 @@ class ItemSchemaRequest(Schema):
         required=True,
         validate=[
             validate.Length(1, 64, 'Name is required and must be between 1 - 64 characters.')
-        ]
+        ],
+        error_messages={
+            'required': 'Item name is required.'
+        }
     )
     description = fields.String()

@@ -13,6 +13,9 @@ class CategorySchema(BaseSchema):
         nullable=False,
         validate=[
             validate.Length(1, 64, 'Category name must be between 1 - 64 characters')
-        ]
+        ],
+        error_messages={
+            'required': 'Category name is required.'
+        }
     )
     description = fields.String()
