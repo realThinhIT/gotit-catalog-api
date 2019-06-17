@@ -27,6 +27,12 @@ $ virtualenv venv --python=python2.7
 $ source ~/gotit-catalog-api/venv/bin/activate
 ```
 
+In case virtualenv can't be found in your PATH, try this command instead:
+
+```
+$ python -m virtualenv venv --python=python2.7
+```
+
 4. Install project dependencies:
 ```
 $ cd ~/gotit-catalog-api
