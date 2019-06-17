@@ -58,13 +58,12 @@ def get_all_items(category, user, pagination):
 @optional_authentication
 @valid_category_required(is_child=True)
 @category_item_required(needs_ownership=False)
-def get_item(item, user, category):
+def get_item(item, user, **kwargs):
     """
     Get a specific item from a category given an ID.
 
     :param item: Item instance
     :param user: User instance of the authenticated user
-    :param category: Category from which the item is being retrieved
     :return: Item information
     """
 
@@ -117,15 +116,13 @@ def create_item(data, user, category):
 @category_item_required(needs_ownership=True)
 @validate_with_schema(ItemSchemaRequest())
 @category_item_unique_name_required
-def update_item(item, data, user, category):
+def update_item(item, data, **kwargs):
     """
     Update an existing item with new data.
     Note that only the one who owns the resource can update it.
 
     :param item: Item instance
     :param data: The new data of the item
-    :param user: User instance of the authenticated user
-    :param category: Category from which the item is being retrieved
     :return:
     """
 
@@ -145,14 +142,12 @@ def update_item(item, data, user, category):
 @requires_authentication
 @valid_category_required(is_child=True)
 @category_item_required(needs_ownership=True)
-def delete_item(item, user, category):
+def delete_item(item, **kwargs):
     """
     Delete an existing item in the database.
     Note that only the one who owns the resource can delete it.
 
     :param item: Item instance
-    :param user: User instance of the authenticated user
-    :param category: Category from which the item is being retrieved
     :return:
     """
 
