@@ -56,7 +56,7 @@ SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://{username}:{password}@127.0.0.
 
 4. Config your secret key, `SECRET_KEY` in `main/config/base.py`.
 
-5. If you want some mockup data for staging, import mockup data using this command:
+5. If you want some mockup data for staging, import mockup data using this command **after running the server for the first time.**
 
 ```
 mysql -u {username} -p {database_name} < ./main/sql/test.sql
