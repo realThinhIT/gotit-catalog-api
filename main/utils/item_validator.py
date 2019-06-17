@@ -39,7 +39,19 @@ def category_item_unique_name_required(func):
         # Check if the category already has an item with the same name
         duplicated_item = category.items.filter_by(name=data.get('name')).one_or_none()
 
-        if duplicated_item:
+        # Check if different items
+        try:
+            item = kwargs['item'] or None
+
+            if duplicated_item:
+                different_item = item.id != duplicated_item.id
+            else:
+                different_item = True
+        except KeyError:
+            different_item = True
+
+        # In case they are not the same item
+        if duplicated_item and different_item:
             raise DuplicatedResourceError({
                 'name': [
                     'An item with name "{}" already exists in this category. '
