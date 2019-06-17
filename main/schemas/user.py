@@ -26,7 +26,10 @@ class UserSchema(BaseSchema):
         }
     )
     email = fields.Email(
-        required=True
+        required=True,
+        error_messages={
+            'required': 'Email is required.'
+        }
     )
     name = fields.String(
         required=True,
