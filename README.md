@@ -59,7 +59,7 @@ SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://{username}:{password}@127.0.0.
 5. If you want some mockup data for staging, import mockup data using this command **after running the server for the first time.**
 
 ```
-mysql -u {username} -p {database_name} < ./sql/test.sql
+$ mysql -u {username} -p {database_name} < ./sql/test.sql
 ```
 
 ## Start Server
@@ -71,21 +71,21 @@ Setup the environment variables in `.sh` files or in your terminal.
 Some variables you can use:
 
 ```
-export ENVIRONMENT={development/ production/ test}
-export FLASK_ENV={development/ production}
-export PORT=8080
+$ export ENVIRONMENT={development/ production/ test}
+$ export FLASK_ENV={development/ production}
+$ export PORT=8080
 ```
 
 ### Development
 
 ```
-./run_dev.sh
+$ ./run_dev.sh
 ```
 
 ### Production
 
 ```
-./run_prod.sh
+$ ./run_prod.sh
 ```
 
 ## Testing
@@ -95,7 +95,7 @@ Use the following command to run tests. All tests are located in `tests/`.
 After running this command, you'll get tests results (passed, failed, warning) and code coverage of the `main` folder.
 
 ```
-./run_test.sh
+$ ./run_test.sh
 ```
 
 ### Test Data
