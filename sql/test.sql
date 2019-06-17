@@ -1,6 +1,7 @@
--- 1234567
-
+-- thinhnd / 1234567
 INSERT INTO `user` (`id`,`created`,`updated`,`username`,`email`,`name`,`password_hash`) VALUES (1,'2019-06-16 11:56:30','2019-06-16 11:56:30','thinhnd','thinhnd.ict@gmail.com','Thinh Nguyen','$2b$10$Wt6HGBqAEs8P3EQ3WOw44eGTqz2HybYFiq5fDkMCm2dNRYjcIwqne');
+
+-- thinhnd2 / 123456
 INSERT INTO `user` (`id`,`created`,`updated`,`username`,`email`,`name`,`password_hash`) VALUES (2,'2019-06-16 16:04:58','2019-06-16 16:04:58','thinhnd2','thinhnd.ict2@gmail.com','Thinh Nguyen','$2b$10$pRyaFxsdJKMBEuiAaTNeqePOKDLoP0jCS.AyDXzZOl85KnAr/.Z36');
 
 INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (1, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Mobile Phones', 'Phones from international manufacturers and brands.');
