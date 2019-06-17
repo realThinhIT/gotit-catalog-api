@@ -7,3 +7,4 @@ venv/**
 *.pyc
 **/*.pyc
 **/**/*.pyc
+.coveragerc

@@ -1,17 +1,6 @@
 from main.security import bcrypt
 
 
-def generate_password_hash(password):
-    """
-    Generate hashed password for user.
-
-    :param password: Plaintext password
-    :return: A string that is encrypted password
-    """
-
-    return bcrypt.generate_password_hash(password)
-
-
 def update_password_hash_in_dict(data):
     """
     Remove old plaintext password from a dict and update
