@@ -134,6 +134,17 @@ def test_post_register_correct_input(client):
     assert 'password' not in resp.keys()
 
 
+def test_post_register_not_json(client):
+    response = client.post(
+        '/users',
+        headers=create_headers(),
+        data="{"
+    )
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+
 def test_post_register_duplicated_username(client):
     credential = {
         'username': 'thinhnd',
