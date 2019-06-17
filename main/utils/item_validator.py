@@ -1,8 +1,8 @@
 import functools
-from main.errors import NotFoundError, ForbiddenError
+from main.errors import NotFoundError, ForbiddenError, DuplicatedResourceError
 
 
-def category_item_required(updating=False, item_id_key='item_id'):
+def category_item_required(needs_ownership=False, item_id_key='item_id'):
     def item_required_wrapper(func):
         @functools.wraps(func)
         def decorator(*args, **kwargs):
@@ -17,7 +17,7 @@ def category_item_required(updating=False, item_id_key='item_id'):
                 raise NotFoundError()
 
             # Check if the user has the rights to modify this object
-            if updating:
+            if needs_ownership:
                 if user.id != item.user_id:
                     raise ForbiddenError()
 
@@ -28,3 +28,24 @@ def category_item_required(updating=False, item_id_key='item_id'):
             return func(*args, **kwargs)
         return decorator
     return item_required_wrapper
+
+
+def category_item_unique_name_required(func):
+    @functools.wraps(func)
+    def decorator(*args, **kwargs):
+        data = kwargs['data']
+        category = kwargs['category']
+
+        # Check if the category already has an item with the same name
+        duplicated_item = category.items.filter_by(name=data.get('name')).one_or_none()
+
+        if duplicated_item:
+            raise DuplicatedResourceError({
+                'name': [
+                    'An item with name "{}" already exists in this category. '
+                    'Please try another name.'.format(data.get('name'))
+                ]
+            })
+
+        return func(*args, **kwargs)
+    return decorator

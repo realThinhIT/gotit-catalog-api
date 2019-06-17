@@ -199,3 +199,22 @@ def test_get_item_by_invalid_category_id_and_valid_item_id(client):
             key in json_response(response).keys()
             for key in ['message', 'error_code']
         ) is True
+
+
+def test_get_item_by_valid_category_id_and_invalid_item_id(client):
+    category_id = 1
+    item_id = 10000
+
+    response = client.get(
+        '/categories/{}/items/{}'.format(category_id, item_id),
+        headers=create_headers()
+    )
+
+    # Check if server returns 404
+    assert response.status_code == 404
+
+    # Check if these keys exists in response
+    assert all(
+        key in json_response(response).keys()
+        for key in ['message', 'error_code']
+    ) is True

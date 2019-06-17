@@ -18,8 +18,8 @@ class UserSchema(BaseSchema):
     username = fields.String(
         required=True,
         validate=[
-            validate.Length(5, 30, 'Username must be between 5 - 30 characters.'),
-            _validate_username
+            _validate_username,
+            validate.Length(5, 30, 'Username must be between 5 - 30 characters.')
         ]
     )
     email = fields.Email(

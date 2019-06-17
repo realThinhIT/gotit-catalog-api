@@ -12,10 +12,6 @@ class CategoryModel(BaseModel):
     # Define relationships
     items = db.relationship('ItemModel', back_populates='category', lazy='dynamic')
 
-    def __init__(self, name, description):
-        self.name = name
-        self.description = description
-
     @classmethod
     def get_all(cls):
         """

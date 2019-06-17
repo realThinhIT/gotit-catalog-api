@@ -5,9 +5,9 @@ from main.utils.category_validator import valid_category_required
 from main.utils.pagination import PaginationUtils
 from main.models.item import ItemModel
 from main.schemas.item import ItemSchema, ItemSchemaRequest
-from main.errors import NotFoundError, DuplicatedResourceError, InternalServerError, ForbiddenError
+from main.errors import NotFoundError, DuplicatedResourceError, InternalServerError
 from main.security import requires_authentication, optional_authentication
-from main.utils.item_validator import category_item_required
+from main.utils.item_validator import category_item_required, category_item_unique_name_required
 
 
 # TODO: Make a new is_owner field for authenticated users
@@ -57,17 +57,16 @@ def get_all_items(category, user, pagination):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['GET'])
 @optional_authentication
 @valid_category_required(is_child=True)
-def get_item(item_id, user, category):
+@category_item_required(needs_ownership=False)
+def get_item(item, user, category):
     """
     Get a specific item from a category given an ID.
 
-    :param item_id: ID of the item
+    :param item: Item instance
     :param user: User instance of the authenticated user
     :param category: Category from which the item is being retrieved
     :return: Item information
     """
-
-    item = category.items.filter_by(id=item_id).first()
 
     if item:
         # If authentication is provided,
@@ -86,6 +85,7 @@ def get_item(item_id, user, category):
 @requires_authentication
 @valid_category_required(is_child=True)
 @validate_with_schema(ItemSchemaRequest())
+@category_item_unique_name_required
 def create_item(data, user, category):
     """
     Create a new item in the given category.
@@ -95,15 +95,6 @@ def create_item(data, user, category):
     :param category: Category from which the item is being created
     :return: A newly created Item
     """
-
-    # Check if the category already has an item with the same name
-    duplicated_item = category.items.filter_by(name=data.get('name')).one_or_none()
-
-    if duplicated_item:
-        raise DuplicatedResourceError({
-            'name': 'An item with name "{}" already exist in this category. '
-                    'Please try another name.'.format(data.get('name'))
-        })
 
     # Proceed to create new item in category
     try:
@@ -123,8 +114,9 @@ def create_item(data, user, category):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['PUT'])
 @requires_authentication
 @valid_category_required(is_child=True)
-@category_item_required(updating=True)
+@category_item_required(needs_ownership=True)
 @validate_with_schema(ItemSchemaRequest())
+@category_item_unique_name_required
 def update_item(item, data, user, category):
     """
     Update an existing item with new data.
@@ -136,15 +128,6 @@ def update_item(item, data, user, category):
     :param category: Category from which the item is being retrieved
     :return:
     """
-
-    # Check if the category already has an item with the same name
-    duplicated_item = category.items.filter_by(name=data.get('name')).one_or_none()
-
-    if duplicated_item:
-        raise DuplicatedResourceError({
-            'name': 'An item with name "{}" already exist in this category. '
-                    'Please try another name.'.format(data.get('name'))
-        })
 
     # Proceed to update the item
     try:
@@ -161,7 +144,7 @@ def update_item(item, data, user, category):
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['DELETE'])
 @requires_authentication
 @valid_category_required(is_child=True)
-@category_item_required(updating=True)
+@category_item_required(needs_ownership=True)
 def delete_item(item, user, category):
     """
     Delete an existing item in the database.
@@ -176,7 +159,7 @@ def delete_item(item, user, category):
     # Proceed to update the item
     try:
         item.delete()
-    except Exception, e:
+    except Exception:
         raise InternalServerError()
 
     return jsonify({
