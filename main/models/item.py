@@ -4,9 +4,7 @@ from main.database import db
 
 
 class ItemModel(BaseModel):
-    """
-    Model for Item
-    """
+    """Model for Item"""
 
     __tablename__ = 'item'
 
@@ -26,8 +24,7 @@ class ItemModel(BaseModel):
 
     @classmethod
     def get_with_pagination_by_category_id(cls, category_id, offset, limit):
-        """
-        Get records of a category with pagination.
+        """Get records of a category with pagination.
 
         :return: A list of Category existing in the database with criteria
         """

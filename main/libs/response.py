@@ -2,8 +2,7 @@ from flask import make_response, json
 
 
 def output_exception_json(exception=None):
-    """
-    To manipulate structure of response payload.
+    """To manipulate structure of response payload.
 
     :param exception: Exception instance for errors
     :return: flask.Response instance

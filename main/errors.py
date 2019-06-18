@@ -8,8 +8,7 @@ class ErrorSchema(Schema):
 
 
 class Error(Exception):
-    """
-    This is the base class for Flask Exceptions,
+    """This is the base class for Flask Exceptions,
     To give basic structure to error payload.
     """
 

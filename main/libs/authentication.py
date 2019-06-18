@@ -6,8 +6,7 @@ from main.libs.encryption.jwttoken import decode_token
 
 
 def _get_user_from_token():
-    """
-    Identity handler for JWT.
+    """Identity handler for JWT.
     To help JWT to retrieve user's information based on the subject from the payload.
 
     :return: User instance if that user is available

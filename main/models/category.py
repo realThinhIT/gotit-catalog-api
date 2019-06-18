@@ -4,9 +4,7 @@ from main.database import db
 
 
 class CategoryModel(BaseModel):
-    """
-    Model for Category
-    """
+    """Model for Category"""
 
     __tablename__ = 'category'
 
@@ -18,8 +16,7 @@ class CategoryModel(BaseModel):
 
     @classmethod
     def get_all(cls):
-        """
-        Get all records of categories from the database.
+        """Get all records of categories from the database.
 
         :return: A list of Category existing in the database
         """

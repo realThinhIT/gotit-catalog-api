@@ -15,8 +15,7 @@ from main.libs.resource_parsing.item import parse_category_item, requires_item_u
 @optional_authentication
 @parse_category(is_child_resource=True)
 def get_items(category, user, pagination):
-    """
-    Get a list of items belong to a category.
+    """Get a list of items belong to a category.
 
     category_id is not needed as it was resolved by a decorator as category
     :param category: Category from which the item is being retrieved
@@ -59,8 +58,7 @@ def get_items(category, user, pagination):
 @parse_category(is_child_resource=True)
 @parse_category_item(requires_ownership=False)
 def get_item(item, user, **_):
-    """
-    Get a specific item from a category given an ID.
+    """Get a specific item from a category given an ID.
 
     category_id is not needed as it was resolved by a decorator as category
     item_id is not needed as it was resolved by a decorator as item
@@ -86,8 +84,7 @@ def get_item(item, user, **_):
 @parse_with_schema(ItemSchemaRequest())
 @requires_item_unique_name
 def create_item(data, user, category):
-    """
-    Create a new item in the given category.
+    """Create a new item in the given category.
 
     category_id is not needed as it was resolved by a decorator as category
     :param data: The data of the item
@@ -116,8 +113,7 @@ def create_item(data, user, category):
 @parse_with_schema(ItemSchemaRequest())
 @requires_item_unique_name
 def update_item(item, data, **_):
-    """
-    Update an existing item with new data.
+    """Update an existing item with new data.
     Note that only the one who owns the resource can update it.
 
     category_id is not needed as it was resolved by a decorator as category
@@ -142,8 +138,7 @@ def update_item(item, data, **_):
 @parse_category(is_child_resource=True)
 @parse_category_item(requires_ownership=True)
 def delete_item(item, **_):
-    """
-    Delete an existing item in the database.
+    """Delete an existing item in the database.
     Note that only the one who owns the resource can delete it.
 
     category_id is not needed as it was resolved by a decorator as category

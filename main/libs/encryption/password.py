@@ -2,8 +2,7 @@ from main import bcrypt
 
 
 def update_password_hash_in_dict(data):
-    """
-    Remove old plaintext password from a dict and update
+    """Remove old plaintext password from a dict and update
     it with a new hashed password.
 
     :param data: A dict contains password field

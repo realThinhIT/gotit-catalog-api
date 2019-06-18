@@ -10,9 +10,7 @@ def _validate_username(string):
 
 
 class UserSchema(BaseSchema):
-    """
-    Schema for User objects
-    """
+    """Schema for User objects"""
 
     id = fields.Integer()
     username = fields.String(

@@ -10,8 +10,7 @@ from main.libs.encryption.jwttoken import generate_token
 @app.route('/authentication', methods=['POST'])
 @parse_with_schema(RequestUserAuthenticationSchema())
 def authenticate(data):
-    """
-    Authenticate user and generate a token for authenticating following requests.
+    """Authenticate user and generate a token for authenticating following requests.
 
     :param data: Valid user schema
     :return: A JWT access token

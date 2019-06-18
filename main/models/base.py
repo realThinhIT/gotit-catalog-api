@@ -4,9 +4,7 @@ from main.database import db
 
 
 class BaseModel(db.Model):
-    """
-    Provides common common interface for model
-    """
+    """Provides common common interface for model"""
 
     __abstract__ = True
 
@@ -18,8 +16,7 @@ class BaseModel(db.Model):
 
     @classmethod
     def find_by_id(cls, _id):
-        """
-        Retrieve the record with the corresponding id from the database
+        """Retrieve the record with the corresponding id from the database
 
         :param _id: ID of the record to be retrieved
         :return: Cls instance if record with the corresponding ID is found, otherwise None
@@ -28,8 +25,7 @@ class BaseModel(db.Model):
         return cls.query.get(_id)
 
     def update(self, **kwargs):
-        """
-        Update instance with keyword arguments or by unpacking a dict.
+        """Update instance with keyword arguments or by unpacking a dict.
 
         :param kwargs:
         :return:
@@ -39,17 +35,13 @@ class BaseModel(db.Model):
             setattr(self, key, value)
 
     def save(self):
-        """
-        Commit changes of the current object to the database
-        """
+        """Commit changes of the current object to the database"""
 
         db.session.add(self)
         db.session.commit()
 
     def delete(self):
-        """
-        Remove a record from the database
-        """
+        """Remove a record from the database"""
 
         db.session.delete(self)
         db.session.commit()

@@ -4,8 +4,7 @@ from main.config import config
 
 
 def generate_token(user):
-    """
-    Generate JWT Token for authentication.
+    """Generate JWT Token for authentication.
 
     :param user: User instance
     :return: JWT Token string
@@ -21,8 +20,7 @@ def generate_token(user):
 
 
 def decode_token(access_token):
-    """
-    Decode & verify token received during authorization.
+    """Decode & verify token received during authorization.
 
     :param access_token: Access token of the user
     :return: token payload if it's available, None if it's not valid

@@ -10,8 +10,7 @@ from main.libs.encryption.password import update_password_hash_in_dict
 @app.route('/users', methods=['POST'])
 @parse_with_schema(UserSchema())
 def register_user(data):
-    """
-    Register a new user into the database
+    """Register a new user into the database
 
     :return: new User instance except for password
     """

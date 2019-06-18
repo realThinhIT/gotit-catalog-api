@@ -6,8 +6,7 @@ from main.schemas.pagination import ResponsePaginationSchema
 class PaginationUtils(object):
     @staticmethod
     def calc_pagination(page=1, per_page=50):
-        """
-        Calculate pagination information from payload.
+        """Calculate pagination information from payload.
         From page and per_page, calculate offset and limit for query statements.
 
         :param page: Current page
@@ -36,8 +35,7 @@ class PaginationUtils(object):
 
     @staticmethod
     def calc_pages(total=0, per_page=50, page=None):
-        """
-        Calculate required pages from total items and items per page.
+        """Calculate required pages from total items and items per page.
 
         :param total: Number of total items
         :param per_page: Items per page
@@ -63,8 +61,7 @@ class PaginationUtils(object):
         pagination=None,
         total=0
     ):
-        """
-        Prepare response with pagination.
+        """Prepare response with pagination.
         Be called to handle preparing payload, exceptions etc.
 
         :param pagination:

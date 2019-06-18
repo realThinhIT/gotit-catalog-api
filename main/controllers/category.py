@@ -7,8 +7,7 @@ from main.libs.resource_parsing.category import parse_category
 
 @app.route('/categories', methods=['GET'])
 def get_categories():
-    """
-    Get all categories from the database
+    """Get all categories from the database
 
     :return: A list of existing categories
     """
@@ -22,8 +21,7 @@ def get_categories():
 @app.route('/categories/<int:category_id>', methods=['GET'])
 @parse_category(is_child_resource=False)
 def get_category(category):
-    """
-    Get category information from the database using the given Category ID.
+    """Get category information from the database using the given Category ID.
 
     category_id is not needed as it was resolved by a decorator as category
     :param category: The Category instance

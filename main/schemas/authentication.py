@@ -2,9 +2,7 @@ from marshmallow import Schema, fields
 
 
 class RequestUserAuthenticationSchema(Schema):
-    """
-    Schema for User while performing authentication
-    """
+    """Schema for User while performing authentication"""
 
     username = fields.String(
         required=True,
@@ -21,8 +19,6 @@ class RequestUserAuthenticationSchema(Schema):
 
 
 class ResponseAuthenticationSchema(Schema):
-    """
-    Schema for Access Token response while performing authentication
-    """
+    """Schema for Access Token response while performing authentication"""
 
     access_token = fields.String()

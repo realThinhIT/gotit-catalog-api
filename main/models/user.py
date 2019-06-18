@@ -4,9 +4,7 @@ from main.models.base import BaseModel
 
 
 class UserModel(BaseModel):
-    """
-    Model for User
-    """
+    """Model for User"""
 
     __tablename__ = 'user'
 
@@ -29,8 +27,7 @@ class UserModel(BaseModel):
 
     @classmethod
     def find_user_by_username_or_email(cls, username='', email=''):
-        """
-        Find user by username and verify its password.
+        """Find user by username and verify its password.
 
         :param username: Username of the user
         :param email: Email of the user

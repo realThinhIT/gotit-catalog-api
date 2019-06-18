@@ -3,9 +3,7 @@ from main.schemas.base import BaseSchema
 
 
 class ItemSchema(BaseSchema):
-    """
-    Schema for Item objects
-    """
+    """Schema for Item objects"""
 
     id = fields.Integer()
     name = fields.String(
