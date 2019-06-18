@@ -70,15 +70,21 @@ $ mysql -u {username} -p {database_name} < ./sql/test.sql
 
 ## Start Server
 
-Use the following commands to start your preferred development environment or production environment.
+Use the following commands to configure your preferred development environment or production environment (if needed).
+
+By default, the server will be started in `development` environment.
 
 ```
 $ export ENVIRONMENT={development/ production} # Default: development
 $ export HOST="0.0.0.0" # Default: 0.0.0.0
 $ export PORT=5000 # Default: 5000
-$ python app.py
 ```
 
+Start the server:
+
+```
+$ python app.py
+```
 
 
 ## Testing
