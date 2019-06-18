@@ -1,7 +1,7 @@
 from tests.helpers import create_headers, json_response, generate_access_token
 
 
-def test_get_all_valid_items_without_authentication(client):
+def test_get_unauthorized(client):
     for category_id in range(1, 4):
         response = client.get(
             '/categories/{}/items'.format(category_id),
@@ -31,7 +31,7 @@ def test_get_all_valid_items_without_authentication(client):
             assert 'is_owner' not in res
 
 
-def test_get_all_valid_items_with_invalid_authentication_type(client):
+def test_get_invalid_authentication_type(client):
     for category_id in range(1, 4):
         response = client.get(
             '/categories/{}/items'.format(category_id),
@@ -44,7 +44,7 @@ def test_get_all_valid_items_with_invalid_authentication_type(client):
         assert response.status_code == 200
 
 
-def test_get_all_valid_items_with_invalid_jwt_authentication(client):
+def test_get_invalid_jwt_authentication(client):
     for category_id in range(1, 4):
         response = client.get(
             '/categories/{}/items'.format(category_id),
@@ -57,7 +57,7 @@ def test_get_all_valid_items_with_invalid_jwt_authentication(client):
         assert response.status_code == 200
 
 
-def test_get_all_valid_items_with_authentication(client):
+def test_get_authorized(client):
     for category_id in range(1, 4):
         response = client.get(
             '/categories/{}/items'.format(category_id),
@@ -87,7 +87,7 @@ def test_get_all_valid_items_with_authentication(client):
             ) is True
 
 
-def test_get_all_valid_items_with_invalid_pagination_with_authentication(client):
+def test_get_authorized_invalid_pagination(client):
     for category_id in range(1, 4):
         response = client.get(
             '/categories/{}/items?page=abc'.format(category_id),
@@ -100,7 +100,7 @@ def test_get_all_valid_items_with_invalid_pagination_with_authentication(client)
         assert response.status_code == 400
 
 
-def test_get_all_valid_items_with_exceeded_pagination_with_authentication(client):
+def test_get_authorized_exceeded_pagination(client):
     for category_id in range(1, 4):
         response = client.get(
             '/categories/{}/items?page=10'.format(category_id),
@@ -113,7 +113,7 @@ def test_get_all_valid_items_with_exceeded_pagination_with_authentication(client
         assert response.status_code == 400
 
 
-def test_get_all_items_by_invalid_category_id(client):
+def test_get_invalid_category_id(client):
     for category_id in range(5, 7):
         response = client.get(
             '/categories/{}/items'.format(category_id),
@@ -130,7 +130,7 @@ def test_get_all_items_by_invalid_category_id(client):
         ) is True
 
 
-def test_get_item_by_valid_category_id_and_id_without_auth(client):
+def test_get_unauthorized_valid_category(client):
     category_id = 1
 
     for item_id in range(1, 3):
@@ -151,7 +151,7 @@ def test_get_item_by_valid_category_id_and_id_without_auth(client):
         ) is True
 
 
-def test_get_item_by_valid_category_id_and_id_with_auth(client):
+def test_get_authorized_valid_category(client):
     category_id = 1
 
     for item_id in range(1, 3):
@@ -174,7 +174,7 @@ def test_get_item_by_valid_category_id_and_id_with_auth(client):
         ) is True
 
 
-def test_get_item_by_invalid_category_id_and_valid_item_id(client):
+def test_get_invalid_category_valid_item(client):
     category_id = 3
 
     for item_id in range(1, 3):
@@ -193,7 +193,7 @@ def test_get_item_by_invalid_category_id_and_valid_item_id(client):
         ) is True
 
 
-def test_get_item_by_valid_category_id_and_invalid_item_id(client):
+def test_get_valid_category_invalid_item(client):
     category_id = 1
     item_id = 10000
 

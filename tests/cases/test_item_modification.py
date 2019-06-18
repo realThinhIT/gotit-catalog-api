@@ -3,7 +3,7 @@ from ..creation import _create_user, _create_item_in_category
 from tests.helpers import create_headers, json_response, generate_access_token, random_string
 
 
-def test_put_item_authorized_valid_data(client):
+def test_put_authorized_valid_data(client):
     # Init data
     category_id = 1
 
@@ -40,7 +40,7 @@ def test_put_item_authorized_valid_data(client):
     assert resp['name'] == data['name']
 
 
-def test_put_item_authorized_duplicated(client):
+def test_put_authorized_duplicated(client):
     # Init data
     category_id = 1
 
@@ -76,7 +76,7 @@ def test_put_item_authorized_duplicated(client):
     ) is True
 
 
-def test_put_item_authorized_invalid_data(client):
+def test_put_authorized_invalid_data(client):
     # Init data
     category_id = 1
 
@@ -110,7 +110,7 @@ def test_put_item_authorized_invalid_data(client):
     ) is True
 
 
-def test_put_item_authorized_not_owned_valid_data(client):
+def test_put_authorized_not_owned_valid_data(client):
     # Init data
     category_id = 1
 
@@ -142,7 +142,7 @@ def test_put_item_authorized_not_owned_valid_data(client):
     assert response.status_code == 403
 
 
-def test_put_item_unauthorized_valid_data(client):
+def test_put_unauthorized_valid_data(client):
     # Init data
     category_id = 1
 

@@ -4,7 +4,7 @@ from ..creation import _create_user
 from tests.helpers import create_headers, json_response, generate_access_token, random_string
 
 
-def test_post_item_authorized(client):
+def test_post_authorized(client):
     # Init data
     user = _create_user(client)
     headers = create_headers(
@@ -35,7 +35,7 @@ def test_post_item_authorized(client):
     ) is True
 
 
-def test_post_item_authorized_unrecognized_field(client):
+def test_post_authorized_unrecognized_field(client):
     # Init data
     user = _create_user(client)
     headers = create_headers(
@@ -67,7 +67,7 @@ def test_post_item_authorized_unrecognized_field(client):
     ) is True
 
 
-def test_post_item_duplicated_content(client):
+def test_post_duplicated_content(client):
     # Init data
     user = _create_user(client)
     headers = create_headers(
@@ -104,7 +104,7 @@ def test_post_item_duplicated_content(client):
     ) is True
 
 
-def test_post_item_authorized_invalid_input(client):
+def test_post_authorized_invalid_input(client):
     # Init data
     user = _create_user(client)
     headers = create_headers(
@@ -136,7 +136,7 @@ def test_post_item_authorized_invalid_input(client):
         assert num_valid_combine <= 1
 
 
-def test_post_item_unauthorized(client):
+def test_post_unauthorized(client):
     headers = create_headers()
 
     category_id = 1

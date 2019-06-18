@@ -2,7 +2,7 @@ from ..creation import _create_user, _create_item_in_category
 from tests.helpers import create_headers, json_response, generate_access_token
 
 
-def test_delete_item_authorized_valid_data(client):
+def test_delete_authorized_valid_data(client):
     # Init data
     category_id = 1
 
@@ -31,7 +31,7 @@ def test_delete_item_authorized_valid_data(client):
     ) is True
 
 
-def test_delete_item_authorized_deleted(client):
+def test_delete_authorized_deleted(client):
     # Init data
     category_id = 1
 
@@ -61,7 +61,7 @@ def test_delete_item_authorized_deleted(client):
     assert response.status_code == 404
 
 
-def test_delete_item_unauthorized_not_owned_valid_data(client):
+def test_delete_unauthorized_not_owned_valid_data(client):
     # Init data
     category_id = 1
 
@@ -88,7 +88,7 @@ def test_delete_item_unauthorized_not_owned_valid_data(client):
     assert response.status_code == 403
 
 
-def test_delete_item_unauthorized_valid_data(client):
+def test_delete_unauthorized_valid_data(client):
     # Init data
     category_id = 1
 
