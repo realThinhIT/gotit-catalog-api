@@ -10,3 +10,4 @@ venv/**
 .coveragerc
 .DS_Store
 **/.DS_Store
+cov_html
