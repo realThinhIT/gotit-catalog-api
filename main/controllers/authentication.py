@@ -2,13 +2,13 @@ from flask import jsonify
 from main import app, bcrypt
 from main.errors import InvalidCredentialsError
 from main.schemas.authentication import RequestUserAuthenticationSchema, ResponseAuthenticationSchema
-from main.libs.request import validate_with_schema
+from main.libs.resource_parsing.common import parse_with_schema
 from main.libs.encryption.jwttoken import generate_token
 from main.models.user import UserModel
 
 
 @app.route('/authentication', methods=['POST'])
-@validate_with_schema(RequestUserAuthenticationSchema())
+@parse_with_schema(RequestUserAuthenticationSchema())
 def authenticate(data):
     """
     Authenticate user and generate a token for authenticating following requests.

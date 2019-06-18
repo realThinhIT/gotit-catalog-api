@@ -68,6 +68,10 @@ def test_post_duplicated_username(client):
         for key in ['error_code', 'message']
     ) is True
 
+    # Check if only username error
+    assert 'email' not in resp['errors']
+    assert 'username' in resp['errors']
+
 
 def test_post_duplicated_email(client):
     credential = {
@@ -93,6 +97,40 @@ def test_post_duplicated_email(client):
         key in resp
         for key in ['error_code', 'message']
     ) is True
+
+    # Check if only email error
+    assert 'email' in resp['errors']
+    assert 'username' not in resp['errors']
+
+
+def test_post_duplicated_email_and_username(client):
+    credential = {
+        'username': 'thinhnd',
+        'password': '1234567',
+        'name': 'Thinh Nguyen',
+        'email': 'thinhnd.ict@gmail.com'
+    }
+
+    response = client.post(
+        '/users',
+        headers=create_headers(),
+        data=json.dumps(credential)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if these keys exists in response
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
+
+    # Check if only email error
+    assert 'email' in resp['errors']
+    assert 'username' in resp['errors']
 
 
 def test_post_invalid_input(client):

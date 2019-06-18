@@ -9,7 +9,7 @@ INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUE
 INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (3, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Tablets', 'Go wherever you want, do whatever you want with these super flexible tablets.');
 INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (4, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Accessories', 'Make your devices prettier!');
 
-INSERT INTO `item` (`id`, `created`, `updated`, `name`, `description`, `user_id`, `category_id`) VALUES (1, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Apple iPhone XS Max', '', 1, 1);
+INSERT INTO `item` (`id`, `created`, `updated`, `name`, `description`, `user_id`, `category_id`) VALUES (1, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Apple iPhone XS Max', 'Best phone ever.', 1, 1);
 INSERT INTO `item` (`id`, `created`, `updated`, `name`, `description`, `user_id`, `category_id`) VALUES (2, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Samsung Galaxy A50', '', 2, 1);
 INSERT INTO `item` (`id`, `created`, `updated`, `name`, `description`, `user_id`, `category_id`) VALUES (3, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'OPPO F11 6GB - 64GB', '', 2, 1);
 INSERT INTO `item` (`id`, `created`, `updated`, `name`, `description`, `user_id`, `category_id`) VALUES (4, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'HP Envy 13-AH0027TU/Core i7-8550U', '', 1, 2);

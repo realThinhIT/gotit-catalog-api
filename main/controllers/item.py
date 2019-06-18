@@ -2,7 +2,7 @@ from flask import jsonify
 from main import app
 from main.models.item import ItemModel
 from main.schemas.item import ItemSchema, ItemSchemaRequest
-from main.libs.request import parse_with_pagination, validate_with_schema
+from main.libs.resource_parsing.common import parse_with_pagination, parse_with_schema
 from main.libs.resource_parsing.category import parse_category
 from main.libs.pagination import PaginationUtils
 from main.libs.authentication import requires_authentication, optional_authentication
@@ -77,7 +77,7 @@ def get_item(item, user, **_):
 @app.route('/categories/<int:category_id>/items', methods=['POST'])
 @requires_authentication
 @parse_category(is_child_resource=True)
-@validate_with_schema(ItemSchemaRequest())
+@parse_with_schema(ItemSchemaRequest())
 @requires_item_unique_name
 def create_item(data, user, category):
     """
@@ -105,7 +105,7 @@ def create_item(data, user, category):
 @requires_authentication
 @parse_category(is_child_resource=True)
 @parse_category_item(requires_ownership=True)
-@validate_with_schema(ItemSchemaRequest())
+@parse_with_schema(ItemSchemaRequest())
 @requires_item_unique_name
 def update_item(item, data, **_):
     """

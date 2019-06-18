@@ -1,6 +1,6 @@
 from flask import jsonify
 from main import app
-from main.libs.request import validate_with_schema
+from main.libs.resource_parsing.common import parse_with_schema
 from main.schemas.user import UserSchema
 from main.models import UserModel
 from main.errors import DuplicatedResourceError
@@ -8,7 +8,7 @@ from main.libs.encryption.password import update_password_hash_in_dict
 
 
 @app.route('/users', methods=['POST'])
-@validate_with_schema(UserSchema())
+@parse_with_schema(UserSchema())
 def register_user(data):
     """
     Register a new user into the database
@@ -22,20 +22,30 @@ def register_user(data):
         data.get('email')
     )
 
+    # Define errors
+    email_error = {
+        'email': [
+            'Email is registered.'
+        ]
+    }
+
+    username_error = {
+        'username': [
+            'Username is registered.'
+        ]
+    }
+
     # Tell user which field is duplicated
     if duplicated_user:
+        errors = {}
+
         if duplicated_user.email == data.get('email'):
-            raise DuplicatedResourceError({
-                'email': [
-                    'Email is registered.'
-                ]
-            })
-        else:
-            raise DuplicatedResourceError({
-                'username': [
-                    'Username is registered.'
-                ],
-            })
+            errors.update(email_error)
+
+        if duplicated_user.username == data.get('username'):
+            errors.update(username_error)
+
+        raise DuplicatedResourceError(errors)
 
     # Proceed to create new user
     data = update_password_hash_in_dict(data)

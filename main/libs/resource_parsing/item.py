@@ -4,6 +4,9 @@ from main.errors import NotFoundError, ForbiddenError, DuplicatedResourceError
 
 # A decorator that checks for valid item from item_id_key, and pass it to route handler
 # for future processing.
+# Requires having category and user in kwargs, or using these decorators in advance:
+# - @optional_authentication / @requires_authentication
+# - @parse_category
 def parse_category_item(requires_ownership=False, item_id_key='item_id'):
     def item_required_wrapper(func):
         @functools.wraps(func)
@@ -34,6 +37,9 @@ def parse_category_item(requires_ownership=False, item_id_key='item_id'):
 
 # A decorator that checks for duplicated name in the same category
 # while updating, or creating new item.
+# Requires having category and data in kwargs, or using these decorators in advance:
+# - @parse_with_schema
+# - @parse_category
 def requires_item_unique_name(func):
     @functools.wraps(func)
     def decorator(*args, **kwargs):
