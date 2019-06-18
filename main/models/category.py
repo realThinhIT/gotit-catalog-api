@@ -4,6 +4,10 @@ from main.database import db
 
 
 class CategoryModel(BaseModel):
+    """
+    Model for Category
+    """
+
     __tablename__ = 'category'
 
     name = Column(String(64), nullable=False, unique=True)

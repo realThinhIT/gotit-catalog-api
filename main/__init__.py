@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
+import main.models
 from main.config import config
 from main.database import db
-from main.models import *
 from main.errors import NotFoundError, InternalServerError, MethodNotAllowed
 from main.controllers import init_routes
 from main.libs.response import output_exception_json

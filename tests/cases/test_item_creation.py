@@ -35,6 +35,38 @@ def test_post_item_authorized(client):
     ) is True
 
 
+def test_post_item_authorized_unrecognized_field(client):
+    # Init data
+    user = _create_user(client)
+    headers = create_headers(
+        access_token=generate_access_token(user['id'])
+    )
+
+    category_id = 1
+    data = {
+        'id': 100,
+        'name': 'My Item {}'.format(random_string(10))
+    }
+
+    # Create item
+    response = client.post(
+        '/categories/{}/items'.format(category_id),
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if each dict contains these keys
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
+
+
 def test_post_item_duplicated_content(client):
     # Init data
     user = _create_user(client)
@@ -48,7 +80,7 @@ def test_post_item_duplicated_content(client):
     }
 
     # Create item
-    response = client.post(
+    client.post(
         '/categories/{}/items'.format(category_id),
         headers=headers,
         data=json.dumps(data)

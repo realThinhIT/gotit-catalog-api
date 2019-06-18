@@ -5,8 +5,9 @@ from main.database import db
 
 class BaseModel(db.Model):
     """
-    Provides common functionalities for model
+    Provides common common interface for model
     """
+
     __abstract__ = True
 
     id = Column(Integer, primary_key=True)

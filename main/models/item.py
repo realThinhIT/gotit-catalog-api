@@ -4,6 +4,10 @@ from main.database import db
 
 
 class ItemModel(BaseModel):
+    """
+    Model for Item
+    """
+
     __tablename__ = 'item'
 
     name = Column(String(64), nullable=False)

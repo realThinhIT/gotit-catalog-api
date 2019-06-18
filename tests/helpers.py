@@ -67,7 +67,9 @@ def generate_access_token(user_id, is_expired=False):
     return jwt.encode({
         'sub': user_id,                             # Subject of this token
         'iat': iat,                                 # Issued at
-        'exp': iat + datetime.timedelta(hours=1) if not is_expired else iat-11     # Expired at
+        'exp': iat + datetime.timedelta(hours=1)    # Expired at
+        if not is_expired
+        else iat - datetime.timedelta(minutes=5)
     }, config.SECRET_KEY)
 
 

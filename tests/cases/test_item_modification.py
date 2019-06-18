@@ -18,7 +18,7 @@ def test_put_item_authorized_valid_data(client):
         'name': 'New Item Name ({})'.format(random_string(10))
     }
 
-    # Create item
+    # Update item
     response = client.put(
         '/categories/{}/items/{}'.format(category_id, item_id),
         headers=headers,
@@ -57,7 +57,7 @@ def test_put_item_authorized_duplicated(client):
         'name': item2['name']
     }
 
-    # Create item
+    # Update item
     response = client.put(
         '/categories/{}/items/{}'.format(category_id, item_id),
         headers=headers,
@@ -91,7 +91,7 @@ def test_put_item_authorized_invalid_data(client):
         'name': 'New Item Name ({})'.format(random_string(100))
     }
 
-    # Create item
+    # Update item
     response = client.put(
         '/categories/{}/items/{}'.format(category_id, item_id),
         headers=headers,
@@ -131,7 +131,7 @@ def test_put_item_authorized_not_owned_valid_data(client):
         'name': 'New Item Name ({})'.format(random_string(10))
     }
 
-    # Create item
+    # Update item
     response = client.put(
         '/categories/{}/items/{}'.format(category_id, item_id),
         headers=headers2,
@@ -160,7 +160,7 @@ def test_put_item_unauthorized_valid_data(client):
         'name': 'New Item Name ({})'.format(random_string(10))
     }
 
-    # Create item
+    # Update item
     response = client.put(
         '/categories/{}/items/{}'.format(category_id, item_id),
         headers=headers2,

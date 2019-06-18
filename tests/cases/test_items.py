@@ -40,8 +40,6 @@ def test_get_all_valid_items_with_invalid_authentication_type(client):
             }
         )
 
-        resp = json_response(response)
-
         # Check if server returns 200
         assert response.status_code == 200
 
@@ -54,8 +52,6 @@ def test_get_all_valid_items_with_invalid_jwt_authentication(client):
                 'Authorization': 'Bearer XXXXX'
             }
         )
-
-        resp = json_response(response)
 
         # Check if server returns 200
         assert response.status_code == 200
@@ -100,8 +96,6 @@ def test_get_all_valid_items_with_invalid_pagination_with_authentication(client)
             )
         )
 
-        resp = json_response(response)
-
         # Check if server returns 400
         assert response.status_code == 400
 
@@ -114,8 +108,6 @@ def test_get_all_valid_items_with_exceeded_pagination_with_authentication(client
                 access_token=generate_access_token(1)
             )
         )
-
-        resp = json_response(response)
 
         # Check if server returns 400
         assert response.status_code == 400

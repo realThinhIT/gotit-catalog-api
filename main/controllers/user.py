@@ -1,9 +1,9 @@
 from flask import jsonify
 from main import app
-from main.libs.resource_parsing.common import parse_with_schema
-from main.schemas.user import UserSchema
 from main.models import UserModel
 from main.errors import DuplicatedResourceError
+from main.libs.resource_parsing.common import parse_with_schema
+from main.schemas.user import UserSchema
 from main.libs.encryption.password import update_password_hash_in_dict
 
 

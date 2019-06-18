@@ -18,12 +18,14 @@ def get_categories():
     )
 
 
+# noinspection PyUnresolvedReferences
 @app.route('/categories/<int:category_id>', methods=['GET'])
 @parse_category(is_child_resource=False)
 def get_category(category):
     """
     Get category information from the database using the given Category ID.
 
+    category_id is not needed as it was resolved by a decorator as category
     :param category: The Category instance
     :return: Category object, otherwise
     """

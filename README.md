@@ -88,7 +88,7 @@ Use the following command to run tests. All tests are located in `tests/`.
 After running this command, you'll get tests results (passed, failed, warning) and code coverage of the `main` folder.
 
 ```
-$ ./run_test.sh
+$ ./run_tests.sh
 ```
 
 ### Test Data

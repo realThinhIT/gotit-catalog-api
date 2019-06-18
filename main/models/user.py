@@ -4,6 +4,10 @@ from main.models.base import BaseModel
 
 
 class UserModel(BaseModel):
+    """
+    Model for User
+    """
+
     __tablename__ = 'user'
 
     username = Column(String(30), unique=True, nullable=False)

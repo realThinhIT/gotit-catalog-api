@@ -40,7 +40,7 @@ def _get_user_from_token():
     return UserModel.find_by_id(user_id)
 
 
-def requires_authentication(func):
+def require_authentication(func):
     @functools.wraps(func)
     def decorator(*args, **kwargs):
         # Retrieve responding user
