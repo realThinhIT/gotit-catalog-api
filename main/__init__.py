@@ -19,15 +19,11 @@ bcrypt = Bcrypt(app)
 # Init DB
 db.init_app(app)
 
+# Initialize database using Flask-SQLAlchemy
+db.create_all(app=app)
+
 # Init routes
 init_routes()
-
-
-# To initialize database using Flask-SQLAlchemy
-@app.before_first_request
-def init_db():
-    db.create_all()
-
 
 # Errors handlers
 @app.errorhandler(errors.Error)
