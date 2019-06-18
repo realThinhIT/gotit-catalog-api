@@ -6,9 +6,9 @@ class BaseSchema(Schema):
 
     SKIP_VALUES = {None}
 
-    id = fields.Integer()
-    updated = fields.DateTime()
-    created = fields.DateTime()
+    id = fields.Integer(dump_only=True)
+    updated = fields.DateTime(dump_only=True)
+    created = fields.DateTime(dump_only=True)
 
     @post_dump
     def remove_skip_values(self, data):

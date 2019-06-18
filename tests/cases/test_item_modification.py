@@ -110,6 +110,41 @@ def test_put_authorized_invalid_data(client):
     ) is True
 
 
+def test_put_authorized_unrecognized_field(client):
+    # Init data
+    category_id = 1
+
+    user = _create_user(client)
+    headers = create_headers(
+        access_token=generate_access_token(user['id'])
+    )
+    item = _create_item_in_category(client, headers, category_id)
+    item_id = item['id']
+
+    data = {
+        'id': 100,
+        'name': 'New Item Name ({})'.format(random_string(100))
+    }
+
+    # Update item
+    response = client.put(
+        '/categories/{}/items/{}'.format(category_id, item_id),
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if each dict contains these keys
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
+
+
 def test_put_authorized_not_owned_valid_data(client):
     # Init data
     category_id = 1

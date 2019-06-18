@@ -34,6 +34,46 @@ def test_post_authorized(client):
         for key in ['id', 'name', 'description', 'updated', 'created']
     ) is True
 
+    # Check if newly created item is has the same name
+    assert resp['name'] == data['name']
+    assert resp['description'] == ''
+
+
+def test_post_authorized_with_description(client):
+    # Init data
+    user = _create_user(client)
+    headers = create_headers(
+        access_token=generate_access_token(user['id'])
+    )
+
+    category_id = 1
+    data = {
+        'name': 'My Item {}'.format(random_string(10)),
+        'description': '{}'.format(random_string(100))
+    }
+
+    # Create item
+    response = client.post(
+        '/categories/{}/items'.format(category_id),
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 200
+    assert response.status_code == 200
+
+    # Check if each dict contains these keys
+    assert all(
+        key in resp
+        for key in ['id', 'name', 'description', 'updated', 'created']
+    ) is True
+
+    # Check if newly created item is has the same name
+    assert resp['name'] == data['name']
+    assert resp['description'] == data['description']
+
 
 def test_post_authorized_unrecognized_field(client):
     # Init data
@@ -134,6 +174,37 @@ def test_post_authorized_invalid_input(client):
 
         # Check if valid combination counter always equals to 0 (all cases are invalid)
         assert num_valid_combine <= 1
+
+
+def test_post_no_name_field(client):
+    # Init data
+    user = _create_user(client)
+    headers = create_headers(
+        access_token=generate_access_token(user['id'])
+    )
+
+    category_id = 1
+    data = {
+        'description': 'Hello testing'
+    }
+
+    # Create item
+    response = client.post(
+        '/categories/{}/items'.format(category_id),
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 400
+    assert response.status_code == 400
+
+    # Check if each dict contains these keys
+    assert all(
+        key in resp
+        for key in ['error_code', 'message']
+    ) is True
 
 
 def test_post_unauthorized(client):

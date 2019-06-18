@@ -5,7 +5,6 @@ from main.schemas.base import BaseSchema
 class CategorySchema(BaseSchema):
     """Schema for Category objects"""
 
-    id = fields.Integer()
     name = fields.String(
         required=True,
         nullable=False,
