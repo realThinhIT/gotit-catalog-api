@@ -1,4 +1,3 @@
-import json
 from tests.helpers import create_headers
 
 

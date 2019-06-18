@@ -3,9 +3,11 @@ from flask import request
 from marshmallow import ValidationError
 from main.errors import WrongContentTypeError, InputValidationError, InvalidPaginationFormatError
 from main.schemas.pagination import RequestPaginationSchema
-from main.utils.pagination import PaginationUtils
+from main.libs.pagination import PaginationUtils
 
 
+# Validate JSON payload sent to the server using corresponding schema.
+# Raise InputValidationError if the payload doesn't meet schema definitions.
 def validate_with_schema(schema=None):
     def decorator(func):
         @functools.wraps(func)
@@ -30,15 +32,14 @@ def validate_with_schema(schema=None):
     return decorator
 
 
+# Parse pagination information from query string.
 def parse_with_pagination(func):
     @functools.wraps(func)
     def decorator(*args, **kwargs):
         # Get query strings from the request
-        rargs = request.args
-
         # Validate pagination
         try:
-            pagination = RequestPaginationSchema().load(rargs)
+            pagination = RequestPaginationSchema().load(request.args)
             pagination = PaginationUtils.calc_pagination(pagination.get('page'), pagination.get('per_page'))
 
             kwargs['pagination'] = pagination

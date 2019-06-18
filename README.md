@@ -72,27 +72,14 @@ $ mysql -u {username} -p {database_name} < ./sql/test.sql
 
 Use the following commands to start your preferred development environment or production environment.
 
-Setup the environment variables in `.sh` files or in your terminal.
-
-Some variables you can use:
-
 ```
-$ export ENVIRONMENT={development/ production/ test}
-$ export FLASK_ENV={development/ production}
-$ export PORT=8080
+$ export ENVIRONMENT={development/ production} # Default: development
+$ export HOST="0.0.0.0" # Default: 0.0.0.0
+$ export PORT=5000 # Default: 5000
+$ python app.py
 ```
 
-### Development
 
-```
-$ ./run_dev.sh
-```
-
-### Production
-
-```
-$ ./run_prod.sh
-```
 
 ## Testing
 

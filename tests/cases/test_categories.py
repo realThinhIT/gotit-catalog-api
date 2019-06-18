@@ -1,7 +1,7 @@
 from tests.helpers import create_headers, json_response
 
 
-def test_get_all_categories(client):
+def test_get_categories(client):
     response = client.get(
         '/categories',
         headers=create_headers()
@@ -23,7 +23,7 @@ def test_get_all_categories(client):
         ) is True
 
 
-def test_get_valid_category_id(client):
+def test_get_valid_category(client):
     for category_id in range(1, 4):
         response = client.get(
             '/categories/{}'.format(category_id),
@@ -40,7 +40,7 @@ def test_get_valid_category_id(client):
         ) is True
 
 
-def test_get_invalid_category_id(client):
+def test_get_invalid_category(client):
     for category_id in range(5, 7):
         response = client.get(
             '/categories/{}'.format(category_id),

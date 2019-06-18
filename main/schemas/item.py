@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validate
-from .base import BaseSchema
+from main.schemas.base import BaseSchema
 
 
 class ItemSchema(BaseSchema):

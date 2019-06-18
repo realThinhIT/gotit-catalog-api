@@ -1,6 +1,6 @@
 import re
 from marshmallow import fields, validate, ValidationError
-from .base import BaseSchema
+from main.schemas.base import BaseSchema
 
 
 def _validate_username(string):
@@ -50,7 +50,7 @@ class UserSchema(BaseSchema):
         },
         load_only=True
     )
-    password_hash = fields.String(
+    encrypted_password = fields.String(
         load_only=True
     )
 

@@ -1,9 +1,9 @@
 import json
 import datetime
-import jwt
 import string
 import random
 import logging
+import jwt
 from main import db
 from main.config import config
 
@@ -74,4 +74,4 @@ def generate_access_token(user_id, is_expired=False):
 def random_string(string_length=10):
     """Generate a random string of fixed length"""
     letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(string_length))
+    return ''.join(random.choice(letters) for _ in range(string_length))

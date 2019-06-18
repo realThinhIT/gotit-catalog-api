@@ -1,19 +1,19 @@
 from flask import jsonify
 from main import app
-from main.request import parse_with_pagination, validate_with_schema
-from main.utils.category_validator import valid_category_required
-from main.utils.pagination import PaginationUtils
 from main.models.item import ItemModel
 from main.schemas.item import ItemSchema, ItemSchemaRequest
-from main.security import requires_authentication, optional_authentication
-from main.utils.item_validator import category_item_required, category_item_unique_name_required
+from main.libs.request import parse_with_pagination, validate_with_schema
+from main.libs.resource_parsing.category import parse_category
+from main.libs.pagination import PaginationUtils
+from main.libs.authentication import requires_authentication, optional_authentication
+from main.libs.resource_parsing.item import parse_category_item, requires_item_unique_name
 
 
 @app.route('/categories/<int:category_id>/items', methods=['GET'])
 @parse_with_pagination
 @optional_authentication
-@valid_category_required(is_child=True)
-def get_all_items(category, user, pagination):
+@parse_category(is_child_resource=True)
+def get_items(category, user, pagination):
     """
     Get a list of items belong to a category.
 
@@ -53,9 +53,9 @@ def get_all_items(category, user, pagination):
 
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['GET'])
 @optional_authentication
-@valid_category_required(is_child=True)
-@category_item_required(requires_ownership=False)
-def get_item(item, user, **kwargs):
+@parse_category(is_child_resource=True)
+@parse_category_item(requires_ownership=False)
+def get_item(item, user, **_):
     """
     Get a specific item from a category given an ID.
 
@@ -71,14 +71,14 @@ def get_item(item, user, **kwargs):
 
     return jsonify(
         ItemSchema().dump(item)
-    ), 200
+    )
 
 
 @app.route('/categories/<int:category_id>/items', methods=['POST'])
 @requires_authentication
-@valid_category_required(is_child=True)
+@parse_category(is_child_resource=True)
 @validate_with_schema(ItemSchemaRequest())
-@category_item_unique_name_required
+@requires_item_unique_name
 def create_item(data, user, category):
     """
     Create a new item in the given category.
@@ -98,16 +98,16 @@ def create_item(data, user, category):
 
     return jsonify(
         ItemSchema().dump(new_item)
-    ), 200
+    )
 
 
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['PUT'])
 @requires_authentication
-@valid_category_required(is_child=True)
-@category_item_required(requires_ownership=True)
+@parse_category(is_child_resource=True)
+@parse_category_item(requires_ownership=True)
 @validate_with_schema(ItemSchemaRequest())
-@category_item_unique_name_required
-def update_item(item, data, **kwargs):
+@requires_item_unique_name
+def update_item(item, data, **_):
     """
     Update an existing item with new data.
     Note that only the one who owns the resource can update it.
@@ -123,14 +123,14 @@ def update_item(item, data, **kwargs):
 
     return jsonify(
         ItemSchema().dump(item)
-    ), 200
+    )
 
 
 @app.route('/categories/<int:category_id>/items/<int:item_id>', methods=['DELETE'])
 @requires_authentication
-@valid_category_required(is_child=True)
-@category_item_required(requires_ownership=True)
-def delete_item(item, **kwargs):
+@parse_category(is_child_resource=True)
+@parse_category_item(requires_ownership=True)
+def delete_item(item, **_):
     """
     Delete an existing item in the database.
     Note that only the one who owns the resource can delete it.
@@ -144,4 +144,4 @@ def delete_item(item, **kwargs):
 
     return jsonify({
         'message': 'Item deleted successfully.'
-    }), 200
+    })

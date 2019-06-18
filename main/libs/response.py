@@ -1,5 +1,4 @@
-from flask import make_response, json, jsonify, Response
-import functools
+from flask import make_response, json
 
 
 class Response(object):

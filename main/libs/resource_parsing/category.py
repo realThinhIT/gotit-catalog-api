@@ -5,10 +5,12 @@ from main.errors import CategoryNotFoundError, NotFoundError
 
 # A decorator that checks if the requested category id does exist, and
 # pass an Category instance into route handler.
-def valid_category_required(is_child=False, category_id_key='category_id'):
+def parse_category(is_child_resource=False, category_id_key='category_id'):
     def decorator_wrapper(func):
         @functools.wraps(func)
         def decorator(*args, **kwargs):
+            category = None
+
             # Retrieve the category
             requested_category_id = kwargs.get(category_id_key, None)
 
@@ -25,7 +27,7 @@ def valid_category_required(is_child=False, category_id_key='category_id'):
             else:
                 # If the resource is a child to category, raise category not found.
                 # Otherwise, just raise not found.
-                if is_child:
+                if is_child_resource:
                     raise CategoryNotFoundError()
                 else:
                     raise NotFoundError()

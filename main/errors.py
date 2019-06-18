@@ -1,11 +1,10 @@
-from flask import jsonify
 from marshmallow import fields, Schema
 
 
 class ErrorSchema(Schema):
     error_code = fields.Int()
     message = fields.String()
-    errors = fields.Raw()
+    errors = fields.Dict()
 
 
 class Error(Exception):
@@ -16,7 +15,7 @@ class Error(Exception):
 
     status_code = 500
 
-    def __init__(self, errors={}):
+    def __init__(self, errors=None):
         super(Error)
         self.errors = errors or {}
 

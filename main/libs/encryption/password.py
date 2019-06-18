@@ -1,4 +1,4 @@
-from main.security import bcrypt
+from main import bcrypt
 
 
 def update_password_hash_in_dict(data):
@@ -13,7 +13,7 @@ def update_password_hash_in_dict(data):
     if data:
         # Replace password with hashed password stored in password_hash
         data.update({
-            'password_hash': bcrypt.generate_password_hash(data.get('password'))
+            'encrypted_password': bcrypt.generate_password_hash(data.get('password'))
         })
         data.pop('password')
 

@@ -1,8 +1,7 @@
 import pytest
-from .helpers import create_mock_data, drop_tables
 from main import app
 from main.database import db
-from main.controllers import *
+from tests.helpers import create_mock_data, drop_tables
 
 
 @pytest.fixture

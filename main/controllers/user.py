@@ -1,10 +1,10 @@
 from flask import jsonify
 from main import app
-from main.request import validate_with_schema
+from main.libs.request import validate_with_schema
 from main.schemas.user import UserSchema
 from main.models import UserModel
 from main.errors import DuplicatedResourceError
-from main.utils.password import update_password_hash_in_dict
+from main.libs.encryption.password import update_password_hash_in_dict
 
 
 @app.route('/users', methods=['POST'])
@@ -45,4 +45,4 @@ def register_user(data):
 
     return jsonify(
         UserSchema().dump(new_user)
-    ), 200
+    )

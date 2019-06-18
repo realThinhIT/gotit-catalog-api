@@ -1,6 +1,3 @@
-import datetime
-
-
 class _Config(object):
     # SQLAlchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = True           # Disable tracking of objects and improve performance

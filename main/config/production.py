@@ -1,4 +1,4 @@
-from .base import _Config
+from main.config.base import _Config
 
 
 class _ProductionConfig(_Config):

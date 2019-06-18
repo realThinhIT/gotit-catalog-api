@@ -1,9 +1,10 @@
 from flask import jsonify
-from main import app
+from main import app, bcrypt
 from main.errors import InvalidCredentialsError
 from main.schemas.authentication import RequestUserAuthenticationSchema, ResponseAuthenticationSchema
-from main.request import validate_with_schema
-from main.security import verify_user_by_username_and_password, generate_token
+from main.libs.request import validate_with_schema
+from main.libs.encryption.jwttoken import generate_token
+from main.models.user import UserModel
 
 
 @app.route('/authentication', methods=['POST'])
@@ -16,16 +17,13 @@ def authenticate(data):
     :return: A JWT access token
     """
 
-    user = verify_user_by_username_and_password(
-        username=data.get('username'),
-        password=data.get('password')
-    )
+    user = UserModel.query.filter_by(username=data.get('username')).first()
 
-    if user:
+    if user and user.encrypted_password and bcrypt.check_password_hash(user.encrypted_password, data.get('password')):
         return jsonify(
             ResponseAuthenticationSchema().load({
                 'access_token': generate_token(user)
             })
-        ), 200
+        )
     else:
         raise InvalidCredentialsError()
