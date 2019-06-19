@@ -1,6 +1,6 @@
 class _Config(object):
     # SQLAlchemy
-    SQLALCHEMY_TRACK_MODIFICATIONS = True           # Disable tracking of objects and improve performance
+    SQLALCHEMY_TRACK_MODIFICATIONS = False          # Disable tracking of objects and improve performance
     SQLALCHEMY_ECHO = False                         # To log SQL statements for debugging
 
     # Flask

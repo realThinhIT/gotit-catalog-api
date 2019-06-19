@@ -87,6 +87,65 @@ def test_get_authorized(client):
             ) is True
 
 
+def test_get_authorized_valid_pagination(client):
+    response = client.get(
+        '/categories/{}/items?page=1&per_page=1'.format(1),
+        headers=create_headers(
+            access_token=generate_access_token(1)
+        )
+    )
+
+    resp = json_response(response)
+
+    # Check if server returns 200
+    assert response.status_code == 200
+
+    # Check if pagination is correct
+    assert all(
+        key in resp
+        for key in ['items', 'total_pages', 'page', 'total', 'per_page', 'has_next']
+    ) is True
+
+    # Check if it has 3 pages
+    assert resp['total_pages'] == 3
+
+    # Check if it has next page
+    assert resp['has_next'] is True
+
+    # Check if number of items is correct
+    assert len(resp['items']) == 1
+
+
+def test_get_authorized_valid_pagination_browse(client):
+    for i in range(1, 2):
+        response = client.get(
+            '/categories/{}/items?page=1&per_page=2'.format(1, i),
+            headers=create_headers(
+                access_token=generate_access_token(1)
+            )
+        )
+
+        resp = json_response(response)
+
+        # Check if server returns 200
+        assert response.status_code == 200
+
+        # Check if pagination is correct
+        assert all(
+            key in resp
+            for key in ['items', 'total_pages', 'page', 'total', 'per_page', 'has_next']
+        ) is True
+
+        # Check if it has 2 pages
+        assert resp['total_pages'] == 2
+
+        # Check if it has next page
+        assert resp['has_next'] is (True if i == 1 else False)
+
+        # Check if number of items is correct
+        assert len(resp['items']) == (2 if i == 1 else 1)
+
+
 def test_get_authorized_invalid_pagination(client):
     for category_id in range(1, 4):
         response = client.get(
