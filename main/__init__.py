@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 import main.models
 from main.config import config
 from main.database import db
@@ -12,6 +13,9 @@ app = Flask(__name__)
 
 # Load configurations corresponding to environment
 app.config.from_object(config)
+
+# Allow CORS for API requests
+CORS(app)
 
 # Define bcrypt encryption
 bcrypt = Bcrypt(app)
