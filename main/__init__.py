@@ -29,6 +29,7 @@ db.create_all(app=app)
 # Init routes
 init_routes()
 
+
 # Errors handlers
 @app.errorhandler(errors.Error)
 def handle_error(exception):
