@@ -1,12 +1,12 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+
 import main.models
 from main.config import config
 from main.database import db
 from main.errors import NotFoundError, InternalServerError, MethodNotAllowed
 from main.controllers import init_routes
-from main.libs.response import output_exception_json
 
 # Create app instance associated with the module that runs it
 app = Flask(__name__)
@@ -31,21 +31,39 @@ init_routes()
 
 
 # Errors handlers
+def _response_error(exception=None):
+    """To manipulate structure of response payload.
+
+    :param exception: Exception instance for errors
+    :return: flask.Response instance
+    """
+
+    prepared_data = {
+        'error_code': exception.error_code,
+        'message': exception.message
+    }
+
+    if exception.errors != {}:
+        prepared_data['errors'] = exception.errors
+
+    return jsonify(prepared_data), exception.status_code
+
+
 @app.errorhandler(errors.Error)
 def handle_error(exception):
-    return output_exception_json(exception=exception)
+    return _response_error(exception=exception)
 
 
 @app.errorhandler(404)
 def page_not_found(*_):
-    return output_exception_json(exception=NotFoundError())
+    return _response_error(exception=NotFoundError())
 
 
 @app.errorhandler(405)
 def method_not_allowed(*_):
-    return output_exception_json(exception=MethodNotAllowed())
+    return _response_error(exception=MethodNotAllowed())
 
 
 @app.errorhandler(500)
 def internal_server_error(*_):
-    return output_exception_json(exception=InternalServerError())
+    return _response_error(exception=InternalServerError())

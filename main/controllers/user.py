@@ -1,10 +1,10 @@
 from flask import jsonify
-from main import app
+
+from main import app, bcrypt
 from main.models import UserModel
 from main.errors import DuplicatedResourceError
-from main.libs.resource_parsing.common import parse_with_schema
 from main.schemas.user import UserSchema
-from main.libs.encryption.password import update_password_hash_in_dict
+from main.libs.resource_parsing.common import parse_with_schema
 
 
 @app.route('/users', methods=['POST'])
@@ -21,23 +21,24 @@ def register_user(data):
         data.get('email')
     )
 
-    # Define errors
-    email_error = {
-        'email': [
-            'Email is registered.'
-        ]
-    }
-
-    username_error = {
-        'username': [
-            'Username is registered.'
-        ]
-    }
-
     # Tell user which field is duplicated
     if duplicated_user:
         errors = {}
 
+        # Define errors
+        email_error = {
+            'email': [
+                'Email is registered.'
+            ]
+        }
+
+        username_error = {
+            'username': [
+                'Username is registered.'
+            ]
+        }
+
+        # Update errors
         if duplicated_user.email == data.get('email'):
             errors.update(email_error)
 
@@ -47,8 +48,12 @@ def register_user(data):
         raise DuplicatedResourceError(errors)
 
     # Proceed to create new user
-    data = update_password_hash_in_dict(data)
+    data.update({
+        'encrypted_password': bcrypt.generate_password_hash(data.get('password'))
+    })
+    data.pop('password')
 
+    # Create a new user
     new_user = UserModel(**data)
     new_user.save()
 

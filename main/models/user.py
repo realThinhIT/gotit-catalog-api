@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, or_
+
 from main.database import db
 from main.models.base import BaseModel
 

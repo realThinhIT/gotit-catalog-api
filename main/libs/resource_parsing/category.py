@@ -1,35 +1,30 @@
 import functools
+
 from main.models import CategoryModel
-from main.errors import CategoryNotFoundError, NotFoundError
+from main.errors import NotFoundError
 
 
 # A decorator that checks if the requested category id does exist, and
 # pass an Category instance into route handler.
-def parse_category(is_child_resource=False, category_id_key='category_id'):
-    def decorator_wrapper(func):
-        @functools.wraps(func)
-        def decorator(*args, **kwargs):
-            category = None
+def parse_category(func):
+    @functools.wraps(func)
+    def decorator(*args, **kwargs):
+        category = None
 
-            # Retrieve the category
-            requested_category_id = kwargs.get(category_id_key, None)
+        # Retrieve the category
+        requested_category_id = kwargs.get('category_id', None)
 
-            if requested_category_id:
-                category = CategoryModel.find_by_id(requested_category_id)
+        if requested_category_id:
+            category = CategoryModel.find_by_id(requested_category_id)
 
-            # Handle errors
-            if category:
-                # Pass category to function
-                kwargs.pop(category_id_key)
-                kwargs['category'] = category
+        # Handle errors
+        if category:
+            # Pass category to function
+            kwargs.pop('category_id')
+            kwargs['category'] = category
 
-                return func(*args, **kwargs)
-            else:
-                # If the resource is a child to category, raise category not found.
-                # Otherwise, just raise not found.
-                if is_child_resource:
-                    raise CategoryNotFoundError()
-                else:
-                    raise NotFoundError()
-        return decorator
-    return decorator_wrapper
+            return func(*args, **kwargs)
+        else:
+            # In case the category does not exist
+            raise NotFoundError()
+    return decorator

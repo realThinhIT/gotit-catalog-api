@@ -1,6 +1,7 @@
 import json
 import itertools
-from ..creation import _create_user
+
+from tests.creation import _create_user
 from tests.helpers import create_headers, json_response, generate_access_token, random_string
 
 

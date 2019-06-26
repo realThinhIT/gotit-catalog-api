@@ -13,4 +13,4 @@ omit =
 
 rm -rf ./cov_html/
 py.test tests --cov=main --cov-report term-missing --cov-report html:cov_html
-open cov_html/index.html
+#open cov_html/index.html

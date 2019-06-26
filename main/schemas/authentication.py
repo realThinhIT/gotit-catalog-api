@@ -18,7 +18,7 @@ class RequestUserAuthenticationSchema(Schema):
     )
 
 
-class ResponseAuthenticationSchema(Schema):
+class ResponseUserAuthenticationSchema(Schema):
     """Schema for Access Token response while performing authentication"""
 
     access_token = fields.String()

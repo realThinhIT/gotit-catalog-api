@@ -1,24 +1,12 @@
 import os
-import logging
-from importlib import import_module
+import importlib
 
-# Available environments for the project
-_availableEnvironments = [
-    'development',
-    'production',
-    'test'
-]
-
-# Retrieve current environment and check if it is valid
+# Retrieve current environment, if one is not specified, fallback to 'development'
 env = os.getenv('ENVIRONMENT', 'development')
-
-if env not in _availableEnvironments:
-    logging.warning('Environment specified is not available. Falling back to "development" environment.')
-    env = 'development'
 
 # Try to import the configurations of that environment
 try:
-    config = import_module('main.config.' + env).config
-except Exception, e:
-    logging.exception('Could not find config for the environment: ' + env, e)
-    raise e
+    config = importlib.import_module('main.config.' + env).config
+except ImportError, e:
+    raise Exception('Could not find config for the environment: "{}". '
+                    'Please correct environment name and try again.'.format(env))

@@ -1,5 +1,6 @@
 import json
 import itertools
+
 from tests.helpers import create_headers, json_response
 
 

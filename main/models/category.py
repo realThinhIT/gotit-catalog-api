@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String
+
 from main.models.base import BaseModel
 from main.database import db
 

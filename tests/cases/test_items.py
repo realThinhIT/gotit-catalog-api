@@ -16,7 +16,7 @@ def test_get_unauthorized(client):
         # Check if pagination is correct
         assert all(
             key in resp
-            for key in ['items', 'total_pages', 'page', 'total', 'per_page', 'has_next']
+            for key in ['items', 'total_pages', 'page', 'total', 'per_page']
         ) is True
 
         # Check if each dict contains these keys
@@ -74,7 +74,7 @@ def test_get_authorized(client):
         # Check if pagination is correct
         assert all(
             key in resp
-            for key in ['items', 'total_pages', 'page', 'total', 'per_page', 'has_next']
+            for key in ['items', 'total_pages', 'page', 'total', 'per_page']
         ) is True
 
         # Check if each dict contains these keys
@@ -103,14 +103,11 @@ def test_get_authorized_valid_pagination(client):
     # Check if pagination is correct
     assert all(
         key in resp
-        for key in ['items', 'total_pages', 'page', 'total', 'per_page', 'has_next']
+        for key in ['items', 'total_pages', 'page', 'total', 'per_page']
     ) is True
 
     # Check if it has 3 pages
     assert resp['total_pages'] == 3
-
-    # Check if it has next page
-    assert resp['has_next'] is True
 
     # Check if number of items is correct
     assert len(resp['items']) == 1
@@ -133,14 +130,11 @@ def test_get_authorized_valid_pagination_browse(client):
         # Check if pagination is correct
         assert all(
             key in resp
-            for key in ['items', 'total_pages', 'page', 'total', 'per_page', 'has_next']
+            for key in ['items', 'total_pages', 'page', 'total', 'per_page']
         ) is True
 
         # Check if it has 2 pages
         assert resp['total_pages'] == 2
-
-        # Check if it has next page
-        assert resp['has_next'] is (True if i == 1 else False)
 
         # Check if number of items is correct
         assert len(resp['items']) == (2 if i == 1 else 1)

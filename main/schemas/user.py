@@ -1,5 +1,7 @@
 import re
+
 from marshmallow import fields, validate, ValidationError
+
 from main.schemas.base import BaseSchema
 
 
@@ -50,5 +52,3 @@ class UserSchema(BaseSchema):
     encrypted_password = fields.String(
         load_only=True
     )
-
-

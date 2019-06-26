@@ -1,10 +1,11 @@
 from flask import jsonify
+
 from main import app, bcrypt
 from main.errors import InvalidCredentialsError
 from main.models.user import UserModel
-from main.schemas.authentication import RequestUserAuthenticationSchema, ResponseAuthenticationSchema
+from main.schemas.authentication import RequestUserAuthenticationSchema, ResponseUserAuthenticationSchema
 from main.libs.resource_parsing.common import parse_with_schema
-from main.libs.encryption.jwttoken import generate_token
+from main.libs.jwttoken import generate_token
 
 
 @app.route('/authentication', methods=['POST'])
@@ -20,7 +21,7 @@ def authenticate(data):
 
     if user and user.encrypted_password and bcrypt.check_password_hash(user.encrypted_password, data.get('password')):
         return jsonify(
-            ResponseAuthenticationSchema().load({
+            ResponseUserAuthenticationSchema().load({
                 'access_token': generate_token(user)
             })
         )

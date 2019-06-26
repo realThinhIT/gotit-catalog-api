@@ -101,6 +101,15 @@ class DuplicatedResourceError(Error):
     message = 'The resource you trying to modify already exists.'
 
 
+class DuplicatedItemError(Error):
+    status_code = StatusCode.BAD_REQUEST
+    error_code = ErrorCode.ALREADY_EXISTS
+    message = 'The resource you trying to modify already exists.'
+    errors = {
+        'name': 'This name is duplicated, please choose another one.'
+    }
+
+
 class ForbiddenError(Error):
     status_code = StatusCode.FORBIDDEN
     error_code = ErrorCode.FORBIDDEN

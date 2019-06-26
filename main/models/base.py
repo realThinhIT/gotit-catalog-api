@@ -1,5 +1,7 @@
 import datetime
+
 from sqlalchemy import Column, Integer, DateTime
+
 from main.database import db
 
 

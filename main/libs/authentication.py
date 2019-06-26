@@ -1,8 +1,10 @@
 import functools
+
 from flask import request
+
 from main.errors import UnauthorizedError
 from main.models.user import UserModel
-from main.libs.encryption.jwttoken import decode_token
+from main.libs.jwttoken import decode_token
 
 
 def _get_user_from_token():

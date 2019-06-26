@@ -1,4 +1,5 @@
 from flask import jsonify
+
 from main import app
 from main.models import CategoryModel
 from main.schemas.category import CategorySchema
@@ -19,7 +20,7 @@ def get_categories():
 
 # noinspection PyUnresolvedReferences
 @app.route('/categories/<int:category_id>', methods=['GET'])
-@parse_category(is_child_resource=False)
+@parse_category
 def get_category(category):
     """Get category information from the database using the given Category ID.
 

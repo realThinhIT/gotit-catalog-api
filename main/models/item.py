@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
+
 from main.models.base import BaseModel
 from main.database import db
 
@@ -27,16 +28,3 @@ class ItemModel(BaseModel):
 
         # If during object creation, description is null then init an empty string for it
         self.description = kwargs.get('description') if kwargs.get('description') is not None else ''
-
-    @classmethod
-    def get_with_pagination_by_category_id(cls, category_id, offset, limit):
-        """Get records of a category with pagination.
-
-        :return: A list of Category existing in the database with criteria
-        """
-
-        return cls.query.filter_by(category_id=category_id).offset(offset).limit(limit).all()
-
-    @classmethod
-    def count_items_by_category_id(cls, category_id):
-        return cls.query.filter_by(category_id=category_id).count()
