@@ -1,6 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_bcrypt import Bcrypt
-from flask_cors import CORS
 
 import main.models
 from main.config import config
@@ -13,9 +12,6 @@ app = Flask(__name__)
 
 # Load configurations corresponding to environment
 app.config.from_object(config)
-
-# Allow CORS for API requests
-CORS(app)
 
 # Define bcrypt encryption
 bcrypt = Bcrypt(app)
@@ -67,3 +63,17 @@ def method_not_allowed(*_):
 @app.errorhandler(500)
 def internal_server_error(*_):
     return _response_error(exception=InternalServerError())
+
+
+# Allow CORS for API requests
+@app.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Methods'] = '*'
+    header['Access-Control-Allow-Headers'] = '*'
+
+    if request.method == 'OPTIONS':
+        response.status_code = 200
+
+    return response
