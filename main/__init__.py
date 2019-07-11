@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_bcrypt import Bcrypt
+import time
 
 import main.models
 from main.config import config
@@ -71,9 +72,11 @@ def after_request(response):
     header = response.headers
     header['Access-Control-Allow-Origin'] = '*'
     header['Access-Control-Allow-Methods'] = '*'
-    header['Access-Control-Allow-Headers'] = '*'
+    header['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
 
     if request.method == 'OPTIONS':
         response.status_code = 200
+
+    time.sleep(0.5)
 
     return response

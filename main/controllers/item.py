@@ -33,6 +33,7 @@ def get_items(category, user):
 
     # Get items with pagination
     items = category.items \
+                    .order_by(ItemModel.created.desc()) \
                     .paginate(page=pagination.get('page'),
                               per_page=pagination.get('per_page'),
                               error_out=False)

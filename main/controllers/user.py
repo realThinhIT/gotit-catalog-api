@@ -5,6 +5,7 @@ from main.models import UserModel
 from main.errors import DuplicatedResourceError
 from main.schemas.user import UserSchema
 from main.libs.resource_parsing.common import parse_with_schema
+from main.libs.authentication import require_authentication
 
 
 @app.route('/users', methods=['POST'])
@@ -59,4 +60,12 @@ def register_user(data):
 
     return jsonify(
         UserSchema().dump(new_user)
+    )
+
+
+@app.route('/users/me', methods=['GET'])
+@require_authentication
+def get_current_user(user):
+    return jsonify(
+        UserSchema().dump(user)
     )

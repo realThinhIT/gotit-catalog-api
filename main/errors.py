@@ -12,11 +12,14 @@ class Error(Exception):
     To give basic structure to error payload.
     """
 
+    errors = None
     status_code = 500
 
     def __init__(self, errors=None):
         super(Error)
-        self.errors = errors or {}
+
+        if self.errors is None:
+            self.errors = errors or {}
 
 
 class StatusCode(object):
@@ -106,7 +109,9 @@ class DuplicatedItemError(Error):
     error_code = ErrorCode.ALREADY_EXISTS
     message = 'The resource you trying to modify already exists.'
     errors = {
-        'name': 'This name is duplicated, please choose another one.'
+        'name': [
+            'This name is duplicated, please choose another one.'
+        ]
     }
 
 
