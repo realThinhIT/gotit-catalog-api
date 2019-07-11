@@ -77,6 +77,6 @@ def after_request(response):
     if request.method == 'OPTIONS':
         response.status_code = 200
 
-    time.sleep(0.5)
+    # time.sleep(0.5)
 
     return response
