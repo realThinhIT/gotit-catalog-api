@@ -6,7 +6,7 @@ from main.schemas.base import BaseSchema
 
 
 def _validate_name(string):
-    regex = re.compile("^[A-Za-z0-9.,'?/]+(?: +[A-Za-z0-9.,'?/]+)*$")
+    regex = re.compile("^[A-Za-z0-9.,'\"?!/]+(?: +[A-Za-z0-9.,\"'?!/]+)*$")
     if not regex.match(string):
         raise ValidationError('Item name must not contain trailing whitespaces and some special characters.')
 
