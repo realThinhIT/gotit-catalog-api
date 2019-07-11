@@ -39,7 +39,7 @@ def get_items(category, user):
                               error_out=False)
 
     # In case the user get an out-of-range page
-    if pagination.get('page') > items.pages:
+    if pagination.get('page') > items.pages > 0:
         raise ExceededRangePaginationError()
 
     # If authentication is provided,

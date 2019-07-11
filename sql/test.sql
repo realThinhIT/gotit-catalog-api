@@ -8,6 +8,8 @@ INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUE
 INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (2, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Laptops', 'Best laptops that can enhance your work performance.');
 INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (3, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Tablets', 'Go wherever you want, do whatever you want with these super flexible tablets.');
 INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (4, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Accessories', 'Make your devices prettier!');
+INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (5, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Books', 'When you do not want to stay at the computer for so long then reading a book is a good choice.');
+INSERT INTO `category` (`id`, `created`, `updated`, `name`, `description`) VALUES (6, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Others', 'Other interesting things.');
 
 INSERT INTO `item` (`id`, `created`, `updated`, `name`, `description`, `user_id`, `category_id`) VALUES (1, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Apple iPhone XS Max', 'Best phone ever.', 1, 1);
 INSERT INTO `item` (`id`, `created`, `updated`, `name`, `description`, `user_id`, `category_id`) VALUES (2, '2019-06-16 15:23:42', '2019-06-16 15:23:42', 'Samsung Galaxy A50', 'This Samsung Galaxy might be the best you can get.', 2, 1);
